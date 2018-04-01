@@ -111,6 +111,12 @@ public abstract class MovieListPresenter implements Presenter {
         this.movieListView.renderMovieList(userModelsCollection);
     }
 
+    private void addMovieListInView(List<Movie> movieList) {
+        final List<MovieModel> userModelsCollection =
+                this.movieModelDataMapper.transform(movieList);
+        this.movieListView.addMoviesToList(userModelsCollection);
+    }
+
     @SuppressWarnings("unchecked")
     private void getMovieList(int page, ProgressType progressType) {
         this.getMovieList.execute(new MovieListSubscriber(progressType), page);
@@ -138,7 +144,10 @@ public abstract class MovieListPresenter implements Presenter {
 
         @Override
         public void onNext(List<Movie> movies) {
-            MovieListPresenter.this.showMovieListInView(movies);
+            if (progressType == ProgressType.Paging)
+                MovieListPresenter.this.addMovieListInView(movies);
+            else
+                MovieListPresenter.this.showMovieListInView(movies);
         }
     }
 

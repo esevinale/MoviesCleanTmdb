@@ -1,18 +1,16 @@
 package com.esevinale.movieguidetmdb.presentation.view.activity;
 
-import android.support.design.widget.TabLayout;
-import android.support.v7.widget.Toolbar;
-
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-
-import android.util.Log;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.widget.ProgressBar;
 
 import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.presentation.AndroidApp;
 import com.esevinale.movieguidetmdb.presentation.view.adapters.SectionsPagerAdapter;
-import com.esevinale.movieguidetmdb.presentation.view.fragment.NowPlayingMovieListFragment;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -26,15 +24,14 @@ public class MainActivity extends BaseActivity {
     ViewPager mViewPager;
     @BindView(R.id.tabs)
     TabLayout tabLayout;
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    @Inject
+    SectionsPagerAdapter mSectionsPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         AndroidApp.getApplicationComponent().inject(this);
         initToolbarLayout();
-
     }
 
     private void initToolbarLayout() {
@@ -42,9 +39,8 @@ public class MainActivity extends BaseActivity {
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }

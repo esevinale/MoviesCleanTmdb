@@ -7,7 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
@@ -26,13 +28,20 @@ public abstract class MovieListFragment extends BaseFragment implements MovieLis
     RecyclerView mRecyclerView;
     private MovieListAdapter movieListAdapter;
 
-        @Override
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = super.onCreateView(inflater, container, savedInstanceState);
+        setUpRecyclerView();
+        setUpSwipeToRefreshLayout();
+        setUpAdapter();
+        return view;
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setUpSwipeToRefreshLayout();
-        setUpRecyclerView();
-        setUpAdapter();
-        setRetainInstance(true);
+        if (savedInstanceState == null)
+            getPresenter().initialize();
     }
 
     private void setUpAdapter() {
@@ -52,6 +61,29 @@ public abstract class MovieListFragment extends BaseFragment implements MovieLis
         });
 
         ((SimpleItemAnimator) mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPresenter().resume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPresenter().pause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getPresenter().destroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     @Override

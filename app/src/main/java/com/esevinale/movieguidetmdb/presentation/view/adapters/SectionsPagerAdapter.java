@@ -4,8 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.esevinale.movieguidetmdb.presentation.view.fragment.MyFragment;
-import com.esevinale.movieguidetmdb.presentation.view.fragment.NowPlayingMovieListFragment;
+import com.esevinale.movieguidetmdb.presentation.view.fragment.tabFragments.NowPlayingMovieListFragment;
+import com.esevinale.movieguidetmdb.presentation.view.fragment.tabFragments.PopularMovieListFragment;
+import com.esevinale.movieguidetmdb.presentation.view.fragment.tabFragments.TopRatedMovieListFragment;
+import com.esevinale.movieguidetmdb.presentation.view.fragment.tabFragments.UpcomingMovieListFragment;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -20,8 +22,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 return new NowPlayingMovieListFragment();
+            case 1:
+                return new UpcomingMovieListFragment();
+            case 2:
+                return new TopRatedMovieListFragment();
+            case 3:
+                return new PopularMovieListFragment();
             default:
-                return new MyFragment();
+                return new NowPlayingMovieListFragment();
         }
     }
 
