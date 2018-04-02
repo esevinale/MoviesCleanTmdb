@@ -8,12 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.esevinale.movieguidetmdb.presentation.AndroidApp;
-import com.esevinale.movieguidetmdb.presentation.presenter.MovieListPresenter;
-import com.esevinale.movieguidetmdb.presentation.presenter.MovieNowPlayingPresenter;
-import com.esevinale.movieguidetmdb.presentation.presenter.MovieUpcomingPresenter;
-import com.esevinale.movieguidetmdb.presentation.view.fragment.MovieListFragment;
+import com.esevinale.movieguidetmdb.presentation.presenter.movieListPresenters.MovieListPresenter;
+import com.esevinale.movieguidetmdb.presentation.presenter.movieListPresenters.MovieUpcomingPresenter;
 
 import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
 
 public class UpcomingMovieListFragment extends MovieListFragment {
 
@@ -22,8 +22,8 @@ public class UpcomingMovieListFragment extends MovieListFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
-        AndroidApp.getApplicationComponent().create().inject(this);
     }
 
     @Override

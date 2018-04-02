@@ -1,19 +1,24 @@
 package com.esevinale.movieguidetmdb.presentation;
 
+import android.app.Activity;
 import android.app.Application;
 
 import com.esevinale.movieguidetmdb.BuildConfig;
-import com.esevinale.movieguidetmdb.presentation.internal.di.components.AppComponent;
 import com.esevinale.movieguidetmdb.presentation.internal.di.components.DaggerAppComponent;
-import com.esevinale.movieguidetmdb.presentation.internal.di.modules.AppModule;
 import com.squareup.leakcanary.LeakCanary;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasActivityInjector;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class AndroidApp extends Application{
+public class AndroidApp extends Application implements HasActivityInjector {
 
-    private static AppComponent applicationComponent;
+    @Inject
+    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 
     @Override public void onCreate() {
         super.onCreate();
@@ -23,13 +28,11 @@ public class AndroidApp extends Application{
     }
 
     private void initializeInjector() {
-        applicationComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this))
-                .build();
-    }
-
-    public static AppComponent getApplicationComponent() {
-        return applicationComponent;
+        DaggerAppComponent
+                .builder()
+                .context(this)
+                .build()
+                .inject(this);
     }
 
     private void initializeLeakDetection() {
@@ -55,5 +58,10 @@ public class AndroidApp extends Application{
                     .build();
 
         Realm.setDefaultConfiguration(realmConfiguration);
+    }
+
+    @Override
+    public AndroidInjector<Activity> activityInjector() {
+        return dispatchingAndroidInjector;
     }
 }

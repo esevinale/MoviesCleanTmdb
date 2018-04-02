@@ -1,13 +1,9 @@
 package com.esevinale.movieguidetmdb.domain.interactor;
 
-import android.util.Log;
-
 import com.esevinale.movieguidetmdb.domain.executor.PostExecutionThread;
 import com.esevinale.movieguidetmdb.domain.executor.ThreadExecutor;
 
 import io.reactivex.Flowable;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;

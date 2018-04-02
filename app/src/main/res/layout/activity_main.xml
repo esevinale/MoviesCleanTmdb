@@ -9,7 +9,7 @@
     android:orientation="vertical"
     tools:context=".presentation.view.activity.BaseActivity">
 
-    <include layout="@layout/toolbar_layout" />
+    <include layout="@layout/appbar_layout" />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -2,6 +2,7 @@ package com.esevinale.movieguidetmdb.presentation.view.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.widget.ProgressBar;
@@ -13,31 +14,34 @@ import com.esevinale.movieguidetmdb.presentation.view.adapters.SectionsPagerAdap
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity  implements HasSupportFragmentInjector {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.progress_bar)
-    protected ProgressBar mProgressBar;
     @BindView(R.id.main_wrapper)
     ViewPager mViewPager;
     @BindView(R.id.tabs)
     TabLayout tabLayout;
+
     @Inject
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    DispatchingAndroidInjector<Fragment> fragmentInjector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        AndroidApp.getApplicationComponent().inject(this);
         initToolbarLayout();
     }
 
     private void initToolbarLayout() {
         setSupportActionBar(toolbar);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -48,10 +52,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public int getContentLayout() {
         return R.layout.activity_main;
-    }
-
-    public ProgressBar getProgressBar() {
-        return mProgressBar;
     }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,4 +69,9 @@ public class MainActivity extends BaseActivity {
 //
 //        return super.onOptionsItemSelected(item);
 //    }
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentInjector;
+    }
 }

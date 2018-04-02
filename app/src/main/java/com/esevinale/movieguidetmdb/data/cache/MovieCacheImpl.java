@@ -1,13 +1,9 @@
 package com.esevinale.movieguidetmdb.data.cache;
 
-import android.telecom.Call;
-import android.util.Log;
-
-import com.esevinale.movieguidetmdb.data.entity.MovieEntity;
-import com.esevinale.movieguidetmdb.data.entity.MovieTypes;
+import com.esevinale.movieguidetmdb.data.entity.movies.MovieEntity;
+import com.esevinale.movieguidetmdb.data.entity.movies.MovieTypes;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -16,7 +12,6 @@ import io.reactivex.Flowable;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-@Singleton
 public class MovieCacheImpl implements MovieCache {
 
     private static final long EXPIRATION_TIME = 60 * 10 * 1000;

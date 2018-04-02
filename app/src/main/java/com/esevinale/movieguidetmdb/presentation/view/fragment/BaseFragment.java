@@ -2,6 +2,7 @@ package com.esevinale.movieguidetmdb.presentation.view.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.esevinale.movieguidetmdb.R;
+import com.esevinale.movieguidetmdb.presentation.view.activity.BaseActivity;
 import com.esevinale.movieguidetmdb.presentation.view.activity.MainActivity;
 
 import butterknife.BindView;
@@ -21,8 +23,6 @@ import butterknife.Unbinder;
 
 public abstract class BaseFragment extends Fragment {
 
-    @BindView(R.id.movie_swipe)
-    protected SwipeRefreshLayout mSwipe;
     protected ProgressBar mProgressBar;
 
     private Unbinder unbinder;
@@ -37,10 +37,13 @@ public abstract class BaseFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+    @LayoutRes
+    protected abstract int getMainContentLayout();
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view =inflater.inflate(R.layout.fragment_movie_list, container, false);
+        View view = inflater.inflate(getMainContentLayout(), container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -51,11 +54,11 @@ public abstract class BaseFragment extends Fragment {
         unbinder.unbind();
     }
 
-    public MainActivity getMainctivity() {
-        return (MainActivity) getActivity();
-    }
-
     protected void showToastMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public BaseActivity getBaseActivity() {
+        return (BaseActivity) getActivity();
     }
 }

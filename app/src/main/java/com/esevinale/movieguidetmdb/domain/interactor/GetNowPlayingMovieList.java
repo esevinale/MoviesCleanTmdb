@@ -1,10 +1,10 @@
 package com.esevinale.movieguidetmdb.domain.interactor;
 
-import com.esevinale.movieguidetmdb.domain.Movie;
+import com.esevinale.movieguidetmdb.domain.entity.Movie;
 import com.esevinale.movieguidetmdb.domain.executor.PostExecutionThread;
 import com.esevinale.movieguidetmdb.domain.executor.ThreadExecutor;
 import com.esevinale.movieguidetmdb.domain.repository.MovieRepository;
-import com.esevinale.movieguidetmdb.presentation.internal.di.PerActivity;
+import com.esevinale.movieguidetmdb.presentation.internal.di.scopes.PerActivity;
 
 import java.util.List;
 

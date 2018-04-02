@@ -1,13 +1,10 @@
 package com.esevinale.movieguidetmdb.presentation.mapper;
 
-import android.util.Log;
-
-import com.esevinale.movieguidetmdb.domain.Movie;
-import com.esevinale.movieguidetmdb.presentation.internal.di.PerActivity;
+import com.esevinale.movieguidetmdb.domain.entity.Movie;
+import com.esevinale.movieguidetmdb.presentation.internal.di.scopes.PerActivity;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

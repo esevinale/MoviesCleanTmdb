@@ -1,9 +1,11 @@
 package com.esevinale.movieguidetmdb.presentation.view.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +16,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.data.net.ApiConstants;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
-import com.esevinale.movieguidetmdb.presentation.view.MovieListView;
+import com.esevinale.movieguidetmdb.presentation.view.ClicableMovieListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +32,10 @@ import butterknife.ButterKnife;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
     private List<MovieModel> movies = new ArrayList<>();
-    private MovieListView view;
+    private ClicableMovieListView view;
     private Context context;
 
-    public MovieListAdapter(MovieListView moviesView) {
+    public MovieListAdapter(ClicableMovieListView moviesView) {
         view = moviesView;
     }
 
@@ -63,8 +67,19 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                     .asBitmap()
                     .apply(options)
                     .load(ApiConstants.POSTER_TMDB_URL + holder.movie.getPosterPath())
-                    .into(holder.poster);
+                    .into(new BitmapImageViewTarget(holder.poster) {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            super.onResourceReady(resource, transition);
+                            Palette.from(resource).generate(palette -> setTitleColor(palette, holder));
+                        }
+                    });
         }
+    }
+
+    private void setTitleColor(Palette palette, ViewHolder holder) {
+        holder.titleBackground.setBackgroundColor(palette.getVibrantColor(context
+                .getResources().getColor(R.color.colorOpacity)));
     }
 
     @Override
@@ -108,7 +123,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
         @Override
         public void onClick(View view) {
-            MovieListAdapter.this.view.viewMovie(movie);
+            MovieListAdapter.this.view.onMovieClicked(movie);
         }
     }
 }

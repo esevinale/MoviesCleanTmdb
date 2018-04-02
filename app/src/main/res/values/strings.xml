@@ -8,6 +8,11 @@
     <string name="top_rated">TOP RATED</string>
     <string name="upcoming">UPCOMING</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="overview">Overview</string>
+    <string name="Trailer">Trailer</string>
+
+    <string name="movie_rating">Rating: %s</string>
+    <string name="movie_details_toolbar">Movie \'%s\' details</string>
+    <string name="movie">%s (%s)</string>
 </resources>

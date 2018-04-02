@@ -1,11 +1,10 @@
 package com.esevinale.movieguidetmdb.domain.repository;
 
-import com.esevinale.movieguidetmdb.domain.Movie;
+import com.esevinale.movieguidetmdb.domain.entity.Movie;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 
 public interface MovieRepository {
     Flowable<List<Movie>> nowPlayingMovies(int page);

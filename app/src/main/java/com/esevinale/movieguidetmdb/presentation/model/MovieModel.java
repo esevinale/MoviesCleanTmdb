@@ -1,5 +1,8 @@
 package com.esevinale.movieguidetmdb.presentation.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 public class MovieModel {
@@ -13,7 +16,7 @@ public class MovieModel {
     private String posterPath;
     private String originalLanguage;
     private String originalTitle;
-    private List<Integer> genreIds = null;
+    private List<Integer> genreIds;
     private String backdropPath;
     private Boolean adult;
     private String overview;

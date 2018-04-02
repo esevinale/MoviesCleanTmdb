@@ -1,21 +1,19 @@
 package com.esevinale.movieguidetmdb.presentation.view.fragment.tabFragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.esevinale.movieguidetmdb.presentation.AndroidApp;
-import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
-import com.esevinale.movieguidetmdb.presentation.presenter.MovieListPresenter;
-import com.esevinale.movieguidetmdb.presentation.presenter.MovieNowPlayingPresenter;
-import com.esevinale.movieguidetmdb.presentation.view.fragment.MovieListFragment;
+import com.esevinale.movieguidetmdb.presentation.presenter.movieListPresenters.MovieListPresenter;
+import com.esevinale.movieguidetmdb.presentation.presenter.movieListPresenters.MovieNowPlayingPresenter;
 
 import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
 
 public class NowPlayingMovieListFragment extends MovieListFragment {
 
@@ -24,8 +22,8 @@ public class NowPlayingMovieListFragment extends MovieListFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidSupportInjection.inject(this);
         super.onCreate(savedInstanceState);
-        AndroidApp.getApplicationComponent().create().inject(this);
     }
 
     @Override

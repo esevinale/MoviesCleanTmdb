@@ -1,62 +1,50 @@
 package com.esevinale.movieguidetmdb.presentation.internal.di.modules;
 
-import android.content.Context;
-
 import com.esevinale.movieguidetmdb.data.cache.MovieCache;
 import com.esevinale.movieguidetmdb.data.cache.MovieCacheImpl;
 import com.esevinale.movieguidetmdb.data.executor.WorkExecutor;
 import com.esevinale.movieguidetmdb.data.repository.MovieDataRepository;
 import com.esevinale.movieguidetmdb.domain.executor.PostExecutionThread;
 import com.esevinale.movieguidetmdb.domain.executor.ThreadExecutor;
-import com.esevinale.movieguidetmdb.domain.interactor.GetNowPlayingMovieList;
-import com.esevinale.movieguidetmdb.domain.interactor.GetUpcomingMovieList;
 import com.esevinale.movieguidetmdb.domain.repository.MovieRepository;
-import com.esevinale.movieguidetmdb.presentation.AndroidApp;
 import com.esevinale.movieguidetmdb.presentation.UIThread;
-import com.esevinale.movieguidetmdb.presentation.internal.di.PerActivity;
-import com.esevinale.movieguidetmdb.presentation.mapper.MovieModelDataMapper;
-import com.esevinale.movieguidetmdb.presentation.presenter.MovieNowPlayingPresenter;
+import com.esevinale.movieguidetmdb.presentation.internal.di.modules.movieListModules.MovieListActivityModule;
+import com.esevinale.movieguidetmdb.presentation.internal.di.scopes.PerActivity;
+import com.esevinale.movieguidetmdb.presentation.view.activity.MainActivity;
+import com.esevinale.movieguidetmdb.presentation.view.activity.MovieDetailsActivity;
 
 import javax.inject.Singleton;
 
+import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
+import dagger.android.ContributesAndroidInjector;
+import dagger.android.support.AndroidSupportInjectionModule;
 
-@Module
-public class AppModule {
-    private final AndroidApp application;
+@Module (includes = {AndroidSupportInjectionModule.class, NetModule.class})
+public interface AppModule {
 
-    public AppModule(AndroidApp application) {
-        this.application = application;
-    }
 
-    @Provides
+    @PerActivity
+    @ContributesAndroidInjector(modules = MovieListActivityModule.class)
+    MainActivity listActivityInjector();
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = MovieDetailsActivityModule.class)
+    MovieDetailsActivity detailsActivityInjector();
+
     @Singleton
-    Context provideApplicationContext() {
-        return this.application;
-    }
+    @Binds
+    ThreadExecutor provideThreadExecutor(WorkExecutor workExecutor);
 
-    @Provides
     @Singleton
-    ThreadExecutor provideThreadExecutor(WorkExecutor workExecutor) {
-        return workExecutor;
-    }
+    @Binds
+    PostExecutionThread providePostExecutionThread(UIThread uiThread);
 
-    @Provides
     @Singleton
-    PostExecutionThread providePostExecutionThread(UIThread uiThread) {
-        return uiThread;
-    }
+    @Binds
+    MovieCache provideMovieCache(MovieCacheImpl movieCache);
 
-    @Provides
     @Singleton
-    MovieCache provideMovieCache(MovieCacheImpl movieCache) {
-        return movieCache;
-    }
-
-    @Provides
-    @Singleton
-    MovieRepository movieRepository(MovieDataRepository movieDataRepository) {
-        return movieDataRepository;
-    }
+    @Binds
+    MovieRepository movieRepository(MovieDataRepository movieDataRepository);
 }

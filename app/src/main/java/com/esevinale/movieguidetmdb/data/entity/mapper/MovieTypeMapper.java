@@ -1,7 +1,7 @@
 package com.esevinale.movieguidetmdb.data.entity.mapper;
 
-import com.esevinale.movieguidetmdb.data.entity.MovieEntity;
-import com.esevinale.movieguidetmdb.data.entity.MovieTypes;
+import com.esevinale.movieguidetmdb.data.entity.movies.MovieEntity;
+import com.esevinale.movieguidetmdb.data.entity.movies.MovieTypes;
 
 import java.util.ArrayList;
 import java.util.List;
