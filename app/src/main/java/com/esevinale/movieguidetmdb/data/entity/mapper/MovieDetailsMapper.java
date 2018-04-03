@@ -14,7 +14,7 @@ import javax.inject.Inject;
 
 public class MovieDetailsMapper {
     @Inject
-    public MovieDetailsMapper() {
+    MovieDetailsMapper() {
     }
 
     public Genre transformGenre(GenreEntity genreEntity) {
@@ -39,7 +39,7 @@ public class MovieDetailsMapper {
         return new MovieDetails(movieDetailsEntity.getAdult(), movieDetailsEntity.getBudget(), genres, movieDetailsEntity.getId(), movieDetailsEntity.getImdbId(), movieDetailsEntity.getOriginalLanguage(),
                 movieDetailsEntity.getOriginalTitle(), movieDetailsEntity.getOverview(), movieDetailsEntity.getPopularity(), productionCompanies, movieDetailsEntity.getReleaseDate(), movieDetailsEntity.getRevenue(),
                 movieDetailsEntity.getRuntime(), movieDetailsEntity.getStatus(), movieDetailsEntity.getTagline(), movieDetailsEntity.getTitle(), movieDetailsEntity.getVoteAverage(), movieDetailsEntity.getVoteCount(),
-                movieDetailsEntity.getBackdropPath(), movieDetailsEntity.getHomepage());
+                movieDetailsEntity.getBackdropPath(), movieDetailsEntity.getHomepage(), movieDetailsEntity.getPosterPath());
 
     }
 }

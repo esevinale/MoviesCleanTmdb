@@ -37,8 +37,8 @@ public class MovieDetailsPresenter implements Presenter {
     private final MovieDetailsDataMapper movieDetailsDataMapper;
 
     @Inject
-    public MovieDetailsPresenter(GetMovieTrailers getMovieTrailers, GetMovieImages getMovieImages, GetMovieDetails getMovieDetails, TrailerModelDataMapper trailerModelDataMapper,
-                                 MovieImagesDataMapper movieImagesDataMapper, MovieDetailsDataMapper movieDetailsDataMapper) {
+    MovieDetailsPresenter(GetMovieTrailers getMovieTrailers, GetMovieImages getMovieImages, GetMovieDetails getMovieDetails, TrailerModelDataMapper trailerModelDataMapper,
+                          MovieImagesDataMapper movieImagesDataMapper, MovieDetailsDataMapper movieDetailsDataMapper) {
         this.getMovieTrailers = getMovieTrailers;
         this.getMovieImages = getMovieImages;
         this.getMovieDetails = getMovieDetails;
@@ -118,7 +118,7 @@ public class MovieDetailsPresenter implements Presenter {
     private void showDetailsInView(MovieDetails movieDetails) {
         final MovieDetailsModel movieDetailsModel =
                 this.movieDetailsDataMapper.transformDetails(movieDetails);
-        this.movieDetailsView.showMovieBackdrop(ApiConstants.BACK_TMDB_URL + movieDetails.getBackdropPath());
+        this.movieDetailsView.showMovieImages(movieDetailsModel);
         this.movieDetailsView.showMovieDetails(movieDetailsModel);
 
     }

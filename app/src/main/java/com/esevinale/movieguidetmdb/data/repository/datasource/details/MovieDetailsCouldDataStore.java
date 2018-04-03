@@ -14,7 +14,7 @@ public class MovieDetailsCouldDataStore implements MovieDetailsDataStore {
     private final MovieService service;
 
     @Inject
-    public MovieDetailsCouldDataStore(MovieService service) {
+    MovieDetailsCouldDataStore(MovieService service) {
         this.service = service;
     }
 

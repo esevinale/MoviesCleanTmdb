@@ -16,7 +16,7 @@ public class GetMovieDetails extends UseCase<MovieDetails, Integer> {
     private final MovieDetailsRepository detailsRepository;
 
     @Inject
-    public GetMovieDetails(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, MovieDetailsRepository detailsRepository) {
+    GetMovieDetails(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, MovieDetailsRepository detailsRepository) {
         super(threadExecutor, postExecutionThread);
         this.detailsRepository = detailsRepository;
     }

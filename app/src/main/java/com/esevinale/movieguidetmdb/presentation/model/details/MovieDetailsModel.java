@@ -24,10 +24,9 @@ public class MovieDetailsModel {
     private Integer voteCount;
     private String backdropPath;
     private String homepage;
+    private String posterPath;
 
-    public MovieDetailsModel(Boolean adult, Integer budget, List<GenreModel> genres, Integer id, String imdbId, String originalLanguage, String originalTitle, String overview, Double popularity,
-                             List<ProductionCompanyModel> productionCompanies, String releaseDate, Integer revenue, Integer runtime, String status, String tagline, String title, Double voteAverage,
-                             Integer voteCount, String backdropPath, String homepage) {
+    public MovieDetailsModel(Boolean adult, Integer budget, List<GenreModel> genres, Integer id, String imdbId, String originalLanguage, String originalTitle, String overview, Double popularity, List<ProductionCompanyModel> productionCompanies, String releaseDate, Integer revenue, Integer runtime, String status, String tagline, String title, Double voteAverage, Integer voteCount, String backdropPath, String homepage, String posterPath) {
         this.adult = adult;
         this.budget = budget;
         this.genres = genres;
@@ -48,6 +47,15 @@ public class MovieDetailsModel {
         this.voteCount = voteCount;
         this.backdropPath = backdropPath;
         this.homepage = homepage;
+        this.posterPath = posterPath;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 
     public String getHomepage() {

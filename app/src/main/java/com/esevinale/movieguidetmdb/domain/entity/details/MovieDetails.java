@@ -24,9 +24,9 @@ public class MovieDetails {
     private Integer voteCount;
     private String backdropPath;
     private String homepage;
+    private String posterPath;
 
-    public MovieDetails(Boolean adult, Integer budget, List<Genre> genres, Integer id, String imdbId, String originalLanguage, String originalTitle, String overview, Double popularity,
-                        List<ProductionCompany> productionCompanies, String releaseDate, Integer revenue, Integer runtime, String status, String tagline, String title, Double voteAverage, Integer voteCount, String backdropPath, String homepage) {
+    public MovieDetails(Boolean adult, Integer budget, List<Genre> genres, Integer id, String imdbId, String originalLanguage, String originalTitle, String overview, Double popularity, List<ProductionCompany> productionCompanies, String releaseDate, Integer revenue, Integer runtime, String status, String tagline, String title, Double voteAverage, Integer voteCount, String backdropPath, String homepage, String posterPath) {
         this.adult = adult;
         this.budget = budget;
         this.genres = genres;
@@ -47,6 +47,15 @@ public class MovieDetails {
         this.voteCount = voteCount;
         this.backdropPath = backdropPath;
         this.homepage = homepage;
+        this.posterPath = posterPath;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 
     public String getHomepage() {

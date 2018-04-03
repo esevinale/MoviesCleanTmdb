@@ -18,7 +18,7 @@ public class GetNowPlayingMovieList extends UseCase<List<Movie>, Integer> {
     private final MovieRepository movieRepository;
 
     @Inject
-    public GetNowPlayingMovieList(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, MovieRepository movieRepository) {
+    GetNowPlayingMovieList(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, MovieRepository movieRepository) {
         super(threadExecutor, postExecutionThread);
         this.movieRepository = movieRepository;
     }

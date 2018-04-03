@@ -17,7 +17,7 @@ public class MovieCloudDataStore implements MovieDataStore {
     private final MovieService service;
     private final MovieTypeMapper typeMapper;
 
-    public MovieCloudDataStore(MovieCache movieCache, MovieService service, MovieTypeMapper typeMapper) {
+    MovieCloudDataStore(MovieCache movieCache, MovieService service, MovieTypeMapper typeMapper) {
         this.movieCache = movieCache;
         this.service = service;
         this.typeMapper = typeMapper;

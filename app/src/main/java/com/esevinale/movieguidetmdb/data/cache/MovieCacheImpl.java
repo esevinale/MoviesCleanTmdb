@@ -17,7 +17,7 @@ public class MovieCacheImpl implements MovieCache {
     private static final long EXPIRATION_TIME = 60 * 10 * 1000;
 
     @Inject
-    public MovieCacheImpl() {
+    MovieCacheImpl() {
     }
 
     @Override

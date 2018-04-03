@@ -23,7 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.view.activity.MovieDetailsActivity" />
+        <activity android:name=".presentation.view.activity.MovieDetailsActivity"
+            android:theme="@style/TranslucentStatusBar"/>
     </application>
 
 </manifest>

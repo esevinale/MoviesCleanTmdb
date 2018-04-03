@@ -15,7 +15,7 @@ public class TrailerCouldDataStore implements TrailerDataStore {
     private final MovieService service;
 
     @Inject
-    public TrailerCouldDataStore(MovieService service) {
+    TrailerCouldDataStore(MovieService service) {
         this.service = service;
     }
 

@@ -19,7 +19,7 @@ public class MovieTrailersRepository implements TrailerRepository {
     private final TrailerDataStore trailerDataStore;
 
     @Inject
-    public MovieTrailersRepository(TrailerMapper movieMapper, TrailerCouldDataStore trailerDataStore) {
+    MovieTrailersRepository(TrailerMapper movieMapper, TrailerCouldDataStore trailerDataStore) {
         this.movieMapper = movieMapper;
         this.trailerDataStore = trailerDataStore;
     }

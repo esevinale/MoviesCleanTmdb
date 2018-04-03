@@ -16,7 +16,7 @@ public class MovieDataStoreFactory {
     private final ConnectionChecker isConnection;
 
     @Inject
-    public MovieDataStoreFactory(MovieCache movieCache, MovieService movieService, MovieTypeMapper typeMapper, ConnectionChecker isConnection) {
+    MovieDataStoreFactory(MovieCache movieCache, MovieService movieService, MovieTypeMapper typeMapper, ConnectionChecker isConnection) {
         this.movieCache = movieCache;
         this.movieService = movieService;
         this.typeMapper = typeMapper;

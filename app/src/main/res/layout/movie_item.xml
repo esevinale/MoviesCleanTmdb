@@ -5,8 +5,9 @@
     android:layout_gravity="center"
     android:clickable="true"
     android:focusable="true"
-    android:layout_margin="1dp"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:padding="1dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:background="@color/colorGray">
 
     <ImageView
         android:id="@+id/movie_poster"
@@ -21,7 +22,6 @@
         android:layout_height="48dp"
         android:layout_gravity="bottom"
         android:alpha="0.8"
-        android:background="@color/colorPrimaryDark"
         android:gravity="center"/>
 
     <TextView

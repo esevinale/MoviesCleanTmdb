@@ -18,7 +18,7 @@ public class GetMovieTrailers extends UseCase<List<Trailer>, Integer> {
     private final TrailerRepository trailerRepository;
 
     @Inject
-    public GetMovieTrailers(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, TrailerRepository trailerRepository) {
+    GetMovieTrailers(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, TrailerRepository trailerRepository) {
         super(threadExecutor, postExecutionThread);
         this.trailerRepository = trailerRepository;
     }

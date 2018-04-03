@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 public class TrailerMapper {
     @Inject
-    public TrailerMapper() { }
+    TrailerMapper() { }
 
     public Trailer transform(TrailerEntity trailerEntity){
         return new Trailer(trailerEntity.getId(), trailerEntity.getKey(), trailerEntity.getName(), trailerEntity.getSite());

@@ -1,9 +1,5 @@
 package com.esevinale.movieguidetmdb.presentation.mapper;
 
-import com.esevinale.movieguidetmdb.data.entity.mapper.MovieDetailsMapper;
-import com.esevinale.movieguidetmdb.data.entity.movieDetails.GenreEntity;
-import com.esevinale.movieguidetmdb.data.entity.movieDetails.MovieDetailsEntity;
-import com.esevinale.movieguidetmdb.data.entity.movieDetails.ProductionCompanyEntity;
 import com.esevinale.movieguidetmdb.domain.entity.details.Genre;
 import com.esevinale.movieguidetmdb.domain.entity.details.MovieDetails;
 import com.esevinale.movieguidetmdb.domain.entity.details.ProductionCompany;
@@ -18,7 +14,7 @@ import javax.inject.Inject;
 
 public class MovieDetailsDataMapper {
     @Inject
-    public MovieDetailsDataMapper() {
+    MovieDetailsDataMapper() {
     }
 
     public GenreModel transformGenre(Genre genre) {
@@ -42,6 +38,7 @@ public class MovieDetailsDataMapper {
         }
         return new MovieDetailsModel(movieDetails.getAdult(), movieDetails.getBudget(), genres, movieDetails.getId(), movieDetails.getImdbId(), movieDetails.getOriginalLanguage(),
                 movieDetails.getOriginalTitle(), movieDetails.getOverview(), movieDetails.getPopularity(), productionCompanies, movieDetails.getReleaseDate(), movieDetails.getRevenue(),
-                movieDetails.getRuntime(), movieDetails.getStatus(), movieDetails.getTagline(), movieDetails.getTitle(), movieDetails.getVoteAverage(), movieDetails.getVoteCount(), movieDetails.getBackdropPath(), movieDetails.getHomepage());
+                movieDetails.getRuntime(), movieDetails.getStatus(), movieDetails.getTagline(), movieDetails.getTitle(), movieDetails.getVoteAverage(), movieDetails.getVoteCount(),
+                movieDetails.getBackdropPath(), movieDetails.getHomepage(), movieDetails.getPosterPath());
     }
 }

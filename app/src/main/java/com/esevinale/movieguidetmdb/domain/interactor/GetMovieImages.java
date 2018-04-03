@@ -16,7 +16,7 @@ public class GetMovieImages extends UseCase<Images, Integer> {
     private final ImageRepository imageRepository;
 
     @Inject
-    public GetMovieImages(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, ImageRepository imageRepository) {
+    GetMovieImages(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, ImageRepository imageRepository) {
         super(threadExecutor, postExecutionThread);
         this.imageRepository = imageRepository;
     }

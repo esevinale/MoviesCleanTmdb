@@ -18,7 +18,7 @@ public class MovieDataRepository implements MovieRepository {
     private final MovieMapper movieMapper;
 
     @Inject
-    public MovieDataRepository(MovieDataStoreFactory movieDataStoreFactory, MovieMapper movieMapper) {
+    MovieDataRepository(MovieDataStoreFactory movieDataStoreFactory, MovieMapper movieMapper) {
         this.movieDataStoreFactory = movieDataStoreFactory;
         this.movieMapper = movieMapper;
     }

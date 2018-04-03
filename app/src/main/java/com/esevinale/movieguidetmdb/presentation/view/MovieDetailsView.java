@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface MovieDetailsView extends LoadDataView {
     void showMovieDetails(MovieDetailsModel movieModel);
-    void showMovieBackdrop(String path);
+    void showMovieImages(MovieDetailsModel movieDetailsModel);
     void showTrailers(List<TrailerModel> video);
     void startTrailerIntent(String url);
 }

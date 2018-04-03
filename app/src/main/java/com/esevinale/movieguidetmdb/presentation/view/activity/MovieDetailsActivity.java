@@ -2,6 +2,7 @@ package com.esevinale.movieguidetmdb.presentation.view.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
 import com.esevinale.movieguidetmdb.R;

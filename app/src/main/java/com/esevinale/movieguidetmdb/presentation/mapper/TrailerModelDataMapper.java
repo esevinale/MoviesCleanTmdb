@@ -14,7 +14,7 @@ import javax.inject.Inject;
 public class TrailerModelDataMapper {
 
     @Inject
-    public TrailerModelDataMapper() {
+    TrailerModelDataMapper() {
     }
 
     public TrailerModel transform(Trailer trailer) {

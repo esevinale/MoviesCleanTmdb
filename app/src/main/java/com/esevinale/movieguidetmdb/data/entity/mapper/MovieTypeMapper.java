@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 public class MovieTypeMapper {
     @Inject
-    public MovieTypeMapper() { }
+    MovieTypeMapper() { }
 
     public MovieEntity transform(MovieEntity movieEntity, MovieTypes movieType){
         movieEntity.setType(movieType.toString());

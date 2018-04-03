@@ -12,7 +12,7 @@ public class MovieLocalDataStore implements MovieDataStore {
 
     private final MovieCache movieCache;
 
-    public MovieLocalDataStore(MovieCache movieCache) {
+    MovieLocalDataStore(MovieCache movieCache) {
         this.movieCache = movieCache;
     }
 

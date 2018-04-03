@@ -14,7 +14,7 @@ import javax.inject.Inject;
 
 public class MovieImagesMapper {
     @Inject
-    public MovieImagesMapper() {
+    MovieImagesMapper() {
     }
 
     public Backdrop transformBackdrop(BackdropEntity backdropEntity) {

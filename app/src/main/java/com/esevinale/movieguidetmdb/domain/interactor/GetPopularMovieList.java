@@ -16,7 +16,7 @@ public class GetPopularMovieList extends UseCase<List<Movie>, Integer> {
     private final MovieRepository movieRepository;
 
     @Inject
-    public GetPopularMovieList(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, MovieRepository movieRepository) {
+    GetPopularMovieList(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, MovieRepository movieRepository) {
         super(threadExecutor, postExecutionThread);
         this.movieRepository = movieRepository;
     }

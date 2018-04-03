@@ -20,7 +20,7 @@ public class MovieDetailsDataRepository implements MovieDetailsRepository {
     private final MovieDetailsDataStore detailsDataStore;
 
     @Inject
-    public MovieDetailsDataRepository(MovieDetailsMapper detailsMapper, MovieDetailsDataStore detailsDataStore) {
+    MovieDetailsDataRepository(MovieDetailsMapper detailsMapper, MovieDetailsDataStore detailsDataStore) {
         this.detailsMapper = detailsMapper;
         this.detailsDataStore = detailsDataStore;
     }

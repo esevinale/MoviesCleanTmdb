@@ -4,8 +4,8 @@ import java.util.List;
 
 public class ImagesModel {
     private Integer id;
-    private List<BackdropModel> backdrops = null;
-    private List<PosterModel> posters = null;
+    private List<BackdropModel> backdrops;
+    private List<PosterModel> posters;
 
     public ImagesModel(Integer id, List<BackdropModel> backdrops, List<PosterModel> posters) {
         this.id = id;

@@ -18,7 +18,7 @@ public class ImagesCouldDataStore implements ImageDataStore {
     private final MovieService service;
 
     @Inject
-    public ImagesCouldDataStore(MovieService service) {
+    ImagesCouldDataStore(MovieService service) {
         this.service = service;
     }
 

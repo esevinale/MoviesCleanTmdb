@@ -9,7 +9,7 @@ import javax.inject.Inject;
 @PerActivity
 public class MovieUpcomingPresenter extends MovieListPresenter {
     @Inject
-    public MovieUpcomingPresenter(GetUpcomingMovieList getMovieList, MovieModelDataMapper movieModelDataMapper) {
+    MovieUpcomingPresenter(GetUpcomingMovieList getMovieList, MovieModelDataMapper movieModelDataMapper) {
         super(getMovieList, movieModelDataMapper);
     }
 }

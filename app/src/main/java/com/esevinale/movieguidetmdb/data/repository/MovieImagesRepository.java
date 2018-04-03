@@ -23,7 +23,7 @@ public class MovieImagesRepository implements ImageRepository {
     private final ImageDataStore imageDataStore;
 
     @Inject
-    public MovieImagesRepository(MovieImagesMapper imagesMapper, ImageDataStore imageDataStore) {
+    MovieImagesRepository(MovieImagesMapper imagesMapper, ImageDataStore imageDataStore) {
         this.imagesMapper = imagesMapper;
         this.imageDataStore = imageDataStore;
     }

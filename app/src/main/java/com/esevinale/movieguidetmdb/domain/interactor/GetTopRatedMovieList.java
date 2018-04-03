@@ -16,7 +16,7 @@ public class GetTopRatedMovieList extends UseCase<List<Movie>, Integer> {
     private final MovieRepository movieRepository;
 
     @Inject
-    public GetTopRatedMovieList(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, MovieRepository movieRepository) {
+    GetTopRatedMovieList(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, MovieRepository movieRepository) {
         super(threadExecutor, postExecutionThread);
         this.movieRepository = movieRepository;
     }

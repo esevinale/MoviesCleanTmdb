@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 public class MovieMapper {
     @Inject
-    public MovieMapper() { }
+    MovieMapper() { }
 
     public Movie transform(MovieEntity movieEntity){
         return new Movie(movieEntity.getVoteCount(), movieEntity.getId(), movieEntity.getVideo(), movieEntity.getVoteAverage(), movieEntity.getTitle(), movieEntity.getPopularity(),

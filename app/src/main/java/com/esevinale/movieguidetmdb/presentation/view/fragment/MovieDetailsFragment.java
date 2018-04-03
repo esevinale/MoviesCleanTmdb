@@ -2,15 +2,17 @@ package com.esevinale.movieguidetmdb.presentation.view.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,48 +22,56 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.data.net.ApiConstants;
-import com.esevinale.movieguidetmdb.domain.entity.details.ProductionCompany;
-import com.esevinale.movieguidetmdb.presentation.AndroidApp;
-import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.model.TrailerModel;
+import com.esevinale.movieguidetmdb.presentation.model.details.GenreModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.MovieDetailsModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.ProductionCompanyModel;
-import com.esevinale.movieguidetmdb.presentation.model.image.BackdropModel;
-import com.esevinale.movieguidetmdb.presentation.model.image.ImagesModel;
-import com.esevinale.movieguidetmdb.presentation.model.image.PosterModel;
 import com.esevinale.movieguidetmdb.presentation.presenter.MovieDetailsPresenter;
 import com.esevinale.movieguidetmdb.presentation.view.MovieDetailsView;
 import com.esevinale.movieguidetmdb.presentation.view.utils.Constants;
 
-import java.util.ArrayList;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.AndroidSupportInjection;
-import dagger.android.support.HasSupportFragmentInjector;
 
 public class MovieDetailsFragment extends BaseFragment implements MovieDetailsView {
 
-    @BindView(R.id.movie_name)
+    @BindView(R.id.movie_name_collaps)
     TextView movieName;
     @BindView(R.id.sites)
     TextView movieSite;
+    @BindView(R.id.movie_year)
+    TextView movieYear;
+    @BindView(R.id.movie_time)
+    TextView movieTime;
+    @BindView(R.id.movie_genres)
+    TextView movieGenres;
     @BindView(R.id.companies)
     TextView movieCompanies;
-    @BindView(R.id.movie_rating)
-    TextView movieRate;
+//    @BindView(R.id.movie_rating)
+//    TextView movieRate;
     @BindView(R.id.movie_overview_content)
     TextView movieOverview;
-    @BindView(R.id.movie_poster)
+    @BindView(R.id.tv_budget)
+    TextView movieBudget;
+    @BindView(R.id.tv_revenue)
+    TextView movieRevenue;
+    @BindView(R.id.movie_backdrop)
+    ImageView movieBackdrop;
+    @BindView(R.id.movie_poster_collapse)
     ImageView moviePoster;
     @BindView(R.id.collapsedToolbar)
     Toolbar toolbar;
@@ -71,6 +81,8 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     LinearLayout trailerSection;
     @BindView(R.id.ll_trailers)
     LinearLayout trailersll;
+    @BindView(R.id.site_layout)
+    LinearLayout siteLayout;
 
     @Inject
     MovieDetailsPresenter movieDetailsPresenter;
@@ -93,7 +105,19 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         movieDetailsPresenter.setView(this);
         mProgressBar = getBaseActivity().getProgressBar();
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        setUpActionBar();
+        return view;
+    }
+
+
+    private void setUpActionBar() {
+        getBaseActivity().setSupportActionBar(toolbar);
+        ActionBar actionBar = getBaseActivity().getSupportActionBar();
+        if (actionBar == null)
+            return;
+        getBaseActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getBaseActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -132,29 +156,87 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     @Override
     public void showMovieDetails(MovieDetailsModel movieModel) {
         collapsingToolbar.setTitle(String.format(getString(R.string.movie_details_toolbar), movieModel.getTitle()));
-        movieSite.setText(movieModel.getHomepage());
+
+        if (TextUtils.isEmpty(movieModel.getHomepage()))
+            siteLayout.setVisibility(View.GONE);
+        else {
+            siteLayout.setVisibility(View.VISIBLE);
+            movieSite.setText(movieModel.getHomepage());
+        }
+        movieCompanies.setText(createStringForCompanies(movieModel.getProductionCompanies()));
+        movieName.setText(movieModel.getTitle());
+//        movieRate.setText(String.format(getString(R.string.movie_rating), String.valueOf(movieModel.getVoteAverage())));
+        movieYear.setText(movieModel.getReleaseDate().substring(0, 4));
+        int hrs = movieModel.getRuntime() / 60;
+        int min = movieModel.getRuntime() - (hrs * 60);
+        movieTime.setText(String.format(getString(R.string.movie_duration), String.valueOf(hrs), String.valueOf(min)));
+        movieOverview.setText(movieModel.getOverview());
+        movieGenres.setText(createStringForGenres(movieModel.getGenres()));
+        movieBudget.setText(formatStringToDollars(movieModel.getBudget()));
+        movieRevenue.setText(formatStringToDollars(movieModel.getRevenue()));
+    }
+
+    private String formatStringToDollars(int sum) {
+        if (sum == 0)
+            return getString(R.string.na_string);
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+
+        symbols.setGroupingSeparator(' ');
+        formatter.setDecimalFormatSymbols(symbols);
+        return "$" + formatter.format(sum);
+    }
+
+    private String createStringForCompanies(List<ProductionCompanyModel> list) {
         StringBuilder sb = new StringBuilder();
-        Iterator<ProductionCompanyModel> iterator = movieModel.getProductionCompanies().iterator();
+        Iterator<ProductionCompanyModel> iterator = list.iterator();
         while (iterator.hasNext()) {
             sb.append(iterator.next().getName());
             if (iterator.hasNext())
                 sb.append(", ");
         }
-        movieModel.getta
-        movieCompanies.setText(sb.toString());
-        movieName.setText(String.format(getString(R.string.movie), movieModel.getTitle(), movieModel.getReleaseDate().substring(0, 4)));
-        movieRate.setText(String.format(getString(R.string.movie_rating), String.valueOf(movieModel.getVoteAverage())));
-        movieOverview.setText(movieModel.getOverview());
+        return sb.toString();
+    }
+
+    private String createStringForGenres(List<GenreModel> list) {
+        StringBuilder sb = new StringBuilder();
+        Iterator<GenreModel> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            sb.append(iterator.next().getName());
+            if (iterator.hasNext())
+                sb.append(", ");
+        }
+        return sb.toString();
     }
 
     @Override
-    public void showMovieBackdrop(String path) {
+    public void showMovieImages(MovieDetailsModel movieDetailsModel) {
         Glide
                 .with(context())
-                .load(path)
+                .asBitmap()
+                .load(ApiConstants.BACK_TMDB_URL + movieDetailsModel.getBackdropPath())
+                .into(new BitmapImageViewTarget(movieBackdrop) {
+                          @Override
+                          public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                              super.onResourceReady(resource, transition);
+                              Palette.from(resource).generate(palette -> setTitleColor(palette));
+                          }
+                      }
+                );
+        Glide
+                .with(context())
+                .load(ApiConstants.POSTER_TMDB_URL + movieDetailsModel.getPosterPath())
                 .into(moviePoster);
     }
 
+    private void setTitleColor(Palette palette) {
+        int color = Color.RED;
+        if (palette.getDarkMutedSwatch() != null)
+            color = palette.getDarkMutedSwatch().getRgb();
+        collapsingToolbar.setBackgroundColor(color);
+        collapsingToolbar.setContentScrimColor(color);
+        collapsingToolbar.setStatusBarScrimColor(color);
+    }
 
     @Override
     public void showTrailers(List<TrailerModel> trailers) {
