@@ -32,7 +32,6 @@
                 android:layout_marginEnd="@dimen/element_margin"
                 android:layout_marginTop="@dimen/element_small_margin"
                 android:gravity="fill"
-                android:text="2018"
                 android:layout_gravity="center_vertical"
                 android:textStyle="bold" />
             <ImageView
@@ -45,7 +44,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/movie_time"
-                android:text="2 h 30 min"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="@dimen/element_small_margin"
                 android:layout_marginStart="@dimen/element_margin" />

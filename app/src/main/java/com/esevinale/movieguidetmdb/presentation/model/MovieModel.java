@@ -3,6 +3,7 @@ package com.esevinale.movieguidetmdb.presentation.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieModel {
@@ -151,4 +152,74 @@ public class MovieModel {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
+
+//    protected MovieModel(Parcel in) {
+//        this.voteCount = in.readInt();
+//        this.id = in.readInt();
+//        this.video = in.readByte() != 0;
+//        this.voteAverage = in.readDouble();
+//        this.title = in.readString();
+//        this.popularity = in.readDouble();
+//        this.posterPath = in.readString();
+//        this.originalLanguage = in.readString();
+//        this.originalTitle = in.readString();
+//        this.genreIds = genresFromString(in.readString());
+//        this.backdropPath = in.readString();
+//        this.adult = in.readByte() != 0;
+//        this.overview = in.readString();
+//        this.releaseDate = in.readString();
+//    }
+//
+//    public static final Creator<MovieModel> CREATOR = new Creator<MovieModel>() {
+//        @Override
+//        public MovieModel createFromParcel(Parcel in) {
+//            return new MovieModel(in);
+//        }
+//
+//        @Override
+//        public MovieModel[] newArray(int size) {
+//            return new MovieModel[size];
+//        }
+//    };
+//
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel parcel, int i) {
+//        parcel.writeInt(id);
+//        parcel.writeByte((byte) (video ? 1 : 0));
+//        parcel.writeDouble(voteAverage);
+//        parcel.writeString(title);
+//        parcel.writeDouble(popularity);
+//        parcel.writeString(posterPath);
+//        parcel.writeString(backdropPath);
+//        parcel.writeString(overview);
+//        parcel.writeString(releaseDate);
+//        parcel.writeInt(voteCount);
+//        parcel.writeString(originalLanguage);
+//        parcel.writeString(originalTitle);
+//        parcel.writeByte((byte) (adult ? 1 : 0));
+//        parcel.writeString(genresToString(genreIds));
+//    }
+//
+//    private String genresToString(List<Integer> genres) {
+//        StringBuilder sb = new StringBuilder();
+//        for (Integer i : genres) {
+//            sb.append(i.toString());
+//            sb.append(",");
+//        }
+//        sb.deleteCharAt(genres.size()-1);
+//        return sb.toString();
+//    }
+//
+//    private List<Integer> genresFromString(String genresStr) {
+//        String[] genresMas = genresStr.split(",");
+//        List<Integer> genres = new ArrayList<>();
+//        for (String s : genresMas)
+//            genres.add(Integer.valueOf(s));
+//        return genres;
+//    }
 }

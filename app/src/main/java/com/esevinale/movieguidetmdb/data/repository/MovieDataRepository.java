@@ -1,5 +1,7 @@
 package com.esevinale.movieguidetmdb.data.repository;
 
+import android.util.Log;
+
 import com.esevinale.movieguidetmdb.data.entity.mapper.MovieMapper;
 import com.esevinale.movieguidetmdb.data.repository.datasource.movie.MovieDataStoreFactory;
 import com.esevinale.movieguidetmdb.domain.entity.Movie;

@@ -6,7 +6,6 @@ import com.esevinale.movieguidetmdb.data.entity.movies.MovieTypes;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
 import io.realm.Realm;
@@ -20,7 +19,6 @@ public class MovieCacheImpl implements MovieCache {
     MovieCacheImpl() {
     }
 
-    @Override
     public boolean isExpired() {
         //not implemented
         return false;
@@ -37,8 +35,8 @@ public class MovieCacheImpl implements MovieCache {
         return Flowable.fromCallable(() -> {
             Realm realm = Realm.getDefaultInstance();
             RealmResults<MovieEntity> list = realm.where(MovieEntity.class).equalTo("type", movieType.toString()).findAll();
-            list.subList((page - 1) * 20, page * 20);
-            return realm.copyFromRealm(list);
+
+            return realm.copyFromRealm(list).subList((page - 1) * 20, page * 20);
         });
     }
 
@@ -46,8 +44,8 @@ public class MovieCacheImpl implements MovieCache {
     public void put(List<MovieEntity> movieEntities) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm1 -> {
-            realm1.delete(MovieEntity.class);
-            realm1.insertOrUpdate(movieEntities);
+            realm.where(MovieEntity.class).equalTo("type", movieEntities.get(0).getType()).findAll().deleteAllFromRealm();
+            realm1.insert(movieEntities);
         });
     }
 }

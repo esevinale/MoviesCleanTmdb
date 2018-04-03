@@ -17,7 +17,7 @@
     </style>
 
     <style name="ThemeWhiteTextApi19">
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorText</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -26,7 +26,7 @@
 
 
     <style name="CollapsedToolbar" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorText</item>
         <item name="android:textStyle">normal</item>
     </style>
 

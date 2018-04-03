@@ -11,7 +11,6 @@ public class MovieEntity extends RealmObject{
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
-    @PrimaryKey
     @SerializedName("id")
     @Expose
     private Integer id;

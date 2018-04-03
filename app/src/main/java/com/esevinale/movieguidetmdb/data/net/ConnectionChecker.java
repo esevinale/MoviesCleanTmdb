@@ -25,6 +25,6 @@ public class ConnectionChecker {
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm != null ? cm.getActiveNetworkInfo() : null;
-        return ((networkInfo != null && networkInfo.isConnectedOrConnecting()) || Util.isEmulator());
+        return ((networkInfo != null && networkInfo.isConnectedOrConnecting()));
     }
 }

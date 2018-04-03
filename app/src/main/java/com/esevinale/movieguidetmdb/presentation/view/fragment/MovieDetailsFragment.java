@@ -230,7 +230,7 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     }
 
     private void setTitleColor(Palette palette) {
-        int color = Color.RED;
+        int color = getResources().getColor(R.color.colorPrimary);
         if (palette.getDarkMutedSwatch() != null)
             color = palette.getDarkMutedSwatch().getRgb();
         collapsingToolbar.setBackgroundColor(color);

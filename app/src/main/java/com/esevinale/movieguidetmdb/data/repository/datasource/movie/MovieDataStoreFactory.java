@@ -1,5 +1,7 @@
 package com.esevinale.movieguidetmdb.data.repository.datasource.movie;
 
+import android.util.Log;
+
 import com.esevinale.movieguidetmdb.data.cache.MovieCache;
 import com.esevinale.movieguidetmdb.data.entity.mapper.MovieTypeMapper;
 import com.esevinale.movieguidetmdb.data.net.ConnectionChecker;
@@ -24,9 +26,9 @@ public class MovieDataStoreFactory {
     }
 
     public MovieDataStore create() {
-//        if (!isConnection.isOnline() && movieCache.isCached())
-//            return new MovieLocalDataStore(movieCache);
-//        else
+        if (!isConnection.isOnline() && movieCache.isCached())
+            return new MovieLocalDataStore(movieCache);
+        else
             return new MovieCloudDataStore(movieCache, movieService, typeMapper);
     }
 }
