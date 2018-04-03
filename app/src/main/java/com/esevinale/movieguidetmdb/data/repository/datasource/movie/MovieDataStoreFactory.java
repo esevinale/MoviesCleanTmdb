@@ -24,9 +24,9 @@ public class MovieDataStoreFactory {
     }
 
     public MovieDataStore create() {
-        if (!isConnection.isOnline() && movieCache.isCached())
-            return new MovieLocalDataStore(movieCache);
-        else
+//        if (!isConnection.isOnline() && movieCache.isCached())
+//            return new MovieLocalDataStore(movieCache);
+//        else
             return new MovieCloudDataStore(movieCache, movieService, typeMapper);
     }
 }
