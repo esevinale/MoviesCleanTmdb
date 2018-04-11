@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.data.net.ApiConstants;
+import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.model.TrailerModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.GenreModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.MovieDetailsModel;
@@ -61,7 +63,7 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     TextView movieGenres;
     @BindView(R.id.companies)
     TextView movieCompanies;
-//    @BindView(R.id.movie_rating)
+    //    @BindView(R.id.movie_rating)
 //    TextView movieRate;
     @BindView(R.id.movie_overview_content)
     TextView movieOverview;
@@ -87,9 +89,10 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     @Inject
     MovieDetailsPresenter movieDetailsPresenter;
 
-    public static MovieDetailsFragment getInstance(int movieId) {
+
+    public static MovieDetailsFragment getInstance(MovieModel movie) {
         Bundle args = new Bundle();
-        args.putInt(Constants.MOVIE_ID, movieId);
+        args.putParcelable(Constants.MOVIE_MODEL, movie);
         MovieDetailsFragment movieDetailsFragment = new MovieDetailsFragment();
         movieDetailsFragment.setArguments(args);
         return movieDetailsFragment;
@@ -117,17 +120,14 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
         if (actionBar == null)
             return;
         getBaseActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getBaseActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle extras = getArguments();
-        if (extras != null && extras.containsKey(Constants.MOVIE_ID)) {
-            movieDetailsPresenter.initialize(getArguments().getInt(Constants.MOVIE_ID));
-
-        }
+        if (extras != null && extras.containsKey(Constants.MOVIE_MODEL))
+            movieDetailsPresenter.initialize(getArguments().getParcelable(Constants.MOVIE_MODEL));
     }
 
     @Override
@@ -166,14 +166,21 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
         movieCompanies.setText(createStringForCompanies(movieModel.getProductionCompanies()));
         movieName.setText(movieModel.getTitle());
 //        movieRate.setText(String.format(getString(R.string.movie_rating), String.valueOf(movieModel.getVoteAverage())));
-        movieYear.setText(movieModel.getReleaseDate().substring(0, 4));
-        int hrs = movieModel.getRuntime() / 60;
-        int min = movieModel.getRuntime() - (hrs * 60);
-        movieTime.setText(String.format(getString(R.string.movie_duration), String.valueOf(hrs), String.valueOf(min)));
+        if (!TextUtils.isEmpty(movieModel.getReleaseDate()))
+            movieYear.setText(movieModel.getReleaseDate().substring(0, 4));
+        if (movieModel.getRuntime() != null) {
+            int hrs = movieModel.getRuntime() / 60;
+            int min = movieModel.getRuntime() - (hrs * 60);
+            movieTime.setText(String.format(getString(R.string.movie_duration), String.valueOf(hrs), String.valueOf(min)));
+        } else {
+            movieTime.setText(String.format(getString(R.string.movie_duration), getString(R.string.na_string), getString(R.string.na_string)));
+        }
         movieOverview.setText(movieModel.getOverview());
         movieGenres.setText(createStringForGenres(movieModel.getGenres()));
-        movieBudget.setText(formatStringToDollars(movieModel.getBudget()));
-        movieRevenue.setText(formatStringToDollars(movieModel.getRevenue()));
+        if (movieModel.getBudget() != null)
+            movieBudget.setText(formatStringToDollars(movieModel.getBudget()));
+        if (movieModel.getRevenue() != null)
+            movieRevenue.setText(formatStringToDollars(movieModel.getRevenue()));
     }
 
     private String formatStringToDollars(int sum) {
@@ -210,11 +217,11 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     }
 
     @Override
-    public void showMovieImages(MovieDetailsModel movieDetailsModel) {
+    public void showMovieImages(String backdrop, String poster) {
         Glide
                 .with(context())
                 .asBitmap()
-                .load(ApiConstants.BACK_TMDB_URL + movieDetailsModel.getBackdropPath())
+                .load(backdrop)
                 .into(new BitmapImageViewTarget(movieBackdrop) {
                           @Override
                           public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
@@ -225,7 +232,7 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
                 );
         Glide
                 .with(context())
-                .load(ApiConstants.POSTER_TMDB_URL + movieDetailsModel.getPosterPath())
+                .load(poster)
                 .into(moviePoster);
     }
 

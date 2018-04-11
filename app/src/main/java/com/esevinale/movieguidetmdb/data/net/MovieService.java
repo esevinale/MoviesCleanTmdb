@@ -1,5 +1,6 @@
 package com.esevinale.movieguidetmdb.data.net;
 
+import com.esevinale.movieguidetmdb.data.entity.ExternalId;
 import com.esevinale.movieguidetmdb.data.entity.images.ImagesEntity;
 import com.esevinale.movieguidetmdb.data.entity.movieDetails.MovieDetailsEntity;
 import com.esevinale.movieguidetmdb.data.entity.movies.MovieResDatesDTO;
@@ -33,4 +34,7 @@ public interface MovieService {
 
     @GET("3/movie/{movie_id}?language=en-US")
     Flowable<MovieDetailsEntity> getMovieDetails(@Path("movie_id") int movie_id);
+
+    @GET("3/movie/{movie_id}/external_ids?language=en-US")
+    Flowable<ExternalId> getExternalId(@Path("movie_id") int movie_id);
 }

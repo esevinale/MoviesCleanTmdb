@@ -15,6 +15,7 @@ import com.esevinale.movieguidetmdb.presentation.internal.di.scopes.PerActivity;
 import com.esevinale.movieguidetmdb.presentation.mapper.MovieDetailsDataMapper;
 import com.esevinale.movieguidetmdb.presentation.mapper.MovieImagesDataMapper;
 import com.esevinale.movieguidetmdb.presentation.mapper.TrailerModelDataMapper;
+import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.model.TrailerModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.MovieDetailsModel;
 import com.esevinale.movieguidetmdb.presentation.model.image.ImagesModel;
@@ -67,12 +68,12 @@ public class MovieDetailsPresenter implements Presenter {
         this.movieDetailsView = null;
     }
 
-    public void initialize(int movieID) {
+    public void initialize(MovieModel movie) {
         this.showViewLoading();
-
-        getMovieDetails(movieID);
+        this.movieDetailsView.showMovieImages(ApiConstants.BACK_TMDB_URL + movie.getBackdropPath(), ApiConstants.POSTER_TMDB_URL + movie.getPosterPath());
+        getMovieDetails(movie.getId());
 //        getMovieImages(movieID);
-        getMovieTrailers(movieID);
+        getMovieTrailers(movie.getId());
     }
 
     public void onTrailerClicked(String url) {
@@ -118,7 +119,6 @@ public class MovieDetailsPresenter implements Presenter {
     private void showDetailsInView(MovieDetails movieDetails) {
         final MovieDetailsModel movieDetailsModel =
                 this.movieDetailsDataMapper.transformDetails(movieDetails);
-        this.movieDetailsView.showMovieImages(movieDetailsModel);
         this.movieDetailsView.showMovieDetails(movieDetailsModel);
 
     }

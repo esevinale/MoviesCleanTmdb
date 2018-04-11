@@ -5,9 +5,8 @@ import android.support.v7.widget.GridLayoutManager;
 
 public class MyGridLayoutManager extends GridLayoutManager {
 
-
-    public MyGridLayoutManager(Context context, int spanCount) {
-        super(context, spanCount);
+    public MyGridLayoutManager(Context context) {
+        super(context, DisplayUtils.getSpanCount(context));
     }
 
     public boolean isOnNextPagePosition() {

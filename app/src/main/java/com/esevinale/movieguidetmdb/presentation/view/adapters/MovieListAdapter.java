@@ -2,6 +2,7 @@ package com.esevinale.movieguidetmdb.presentation.view.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
@@ -22,6 +23,7 @@ import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.data.net.ApiConstants;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.view.ClicableMovieListView;
+import com.esevinale.movieguidetmdb.presentation.view.utils.DisplayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,20 +46,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     public MovieListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View rootView = LayoutInflater.from(context).inflate(R.layout.movie_item, parent, false);
-
         return new ViewHolder(rootView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.itemView.setOnClickListener(holder);
         holder.movie = movies.get(position);
         holder.name.setText(movies.get(position).getTitle());
-
-        RequestOptions options = new RequestOptions()
-                .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                .priority(Priority.HIGH);
 
         if (holder.movie.getPosterPath() == null) {
             holder.poster.setImageResource(R.drawable.noimagefound);
@@ -65,7 +61,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             Glide
                     .with(context)
                     .asBitmap()
-                    .apply(options)
+                    .apply(getGlideOptions())
                     .load(ApiConstants.POSTER_TMDB_URL + holder.movie.getPosterPath())
                     .into(new BitmapImageViewTarget(holder.poster) {
                         @Override
@@ -75,6 +71,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                         }
                     });
         }
+    }
+
+    private RequestOptions getGlideOptions() {
+        return new RequestOptions()
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .priority(Priority.HIGH);
     }
 
     private void setTitleColor(Palette palette, ViewHolder holder) {

@@ -7,14 +7,17 @@ android {
         applicationId "com.esevinale.movieguidetmdb"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.JustMovie
         }
     }
     compileOptions {
@@ -48,7 +51,6 @@ dependencies {
     implementation "com.android.support:palette-v7:${supportLibVersion}"
 
     //Test
-    implementation 'com.android.support:support-v4:27.1.0'
     testImplementation 'junit:junit:4.12'
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
     androidTestImplementation "org.mockito:mockito-core:${mockitoVersion}"
@@ -73,6 +75,9 @@ dependencies {
     //Glide
     implementation "com.github.bumptech.glide:glide:${glideVersion}"
     annotationProcessor "com.github.bumptech.glide:compiler:${glideVersion}"
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     // Retrofit 2
     implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
