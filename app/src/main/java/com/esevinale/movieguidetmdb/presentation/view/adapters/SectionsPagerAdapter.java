@@ -11,7 +11,7 @@ import com.esevinale.movieguidetmdb.presentation.view.fragment.tabFragments.Upco
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-    public static final int SECTIONS_PAGER_FRAGMENT_COUNT = 4;
+    private static final int SECTIONS_PAGER_FRAGMENT_COUNT = 4;
 
     public SectionsPagerAdapter(FragmentManager fm) {
         super(fm);

@@ -13,33 +13,33 @@ import java.util.List;
 import io.reactivex.Flowable;
 
 public class MovieCloudDataStore implements MovieDataStore {
-    private final MovieCache movieCache;
-    private final MovieService service;
-    private final MovieTypeMapper typeMapper;
+    private final MovieCache mMovieCache;
+    private final MovieService mService;
+    private final MovieTypeMapper mTypeMapper;
 
     MovieCloudDataStore(MovieCache movieCache, MovieService service, MovieTypeMapper typeMapper) {
-        this.movieCache = movieCache;
-        this.service = service;
-        this.typeMapper = typeMapper;
+        this.mMovieCache = movieCache;
+        this.mService = service;
+        this.mTypeMapper = typeMapper;
     }
 
     @Override
     public Flowable<List<MovieEntity>> nowPlayingMovies(int page) {
-        return service.getMovieNowPlaying(page).map(MovieResDatesDTO::getResults).map(movieEntities -> typeMapper.transformList(movieEntities, MovieTypes.NowPlaying)).doOnNext(movieCache::put);
+        return mService.getMovieNowPlaying(page).map(MovieResDatesDTO::getResults).map(movieEntities -> mTypeMapper.transformList(movieEntities, MovieTypes.NowPlaying)).doOnNext(mMovieCache::put);
     }
 
     @Override
     public Flowable<List<MovieEntity>> popularMovies(int page) {
-        return service.getMoviePopular(page).map(MovieResultDTO::getResults).map(movieEntities -> typeMapper.transformList(movieEntities, MovieTypes.Popular)).doOnNext(movieCache::put);
+        return mService.getMoviePopular(page).map(MovieResultDTO::getResults).map(movieEntities -> mTypeMapper.transformList(movieEntities, MovieTypes.Popular)).doOnNext(mMovieCache::put);
     }
 
     @Override
     public Flowable<List<MovieEntity>> topRatedMovies(int page) {
-        return service.getMovieTopRated(page).map(MovieResultDTO::getResults).map(movieEntities -> typeMapper.transformList(movieEntities, MovieTypes.TopRated)).doOnNext(movieCache::put);
+        return mService.getMovieTopRated(page).map(MovieResultDTO::getResults).map(movieEntities -> mTypeMapper.transformList(movieEntities, MovieTypes.TopRated)).doOnNext(mMovieCache::put);
     }
 
     @Override
     public Flowable<List<MovieEntity>> upcomingMovies(int page) {
-        return service.getMovieUpcoming(page).map(MovieResDatesDTO::getResults).map(movieEntities -> typeMapper.transformList(movieEntities, MovieTypes.Upcoming)).doOnNext(movieCache::put);
+        return mService.getMovieUpcoming(page).map(MovieResDatesDTO::getResults).map(movieEntities -> mTypeMapper.transformList(movieEntities, MovieTypes.Upcoming)).doOnNext(mMovieCache::put);
     }
 }

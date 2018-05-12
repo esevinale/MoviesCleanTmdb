@@ -2,7 +2,6 @@ package com.esevinale.movieguidetmdb.presentation.view.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
@@ -23,7 +22,6 @@ import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.data.net.ApiConstants;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.view.ClicableMovieListView;
-import com.esevinale.movieguidetmdb.presentation.view.utils.DisplayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,33 +31,33 @@ import butterknife.ButterKnife;
 
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
-    private List<MovieModel> movies = new ArrayList<>();
-    private ClicableMovieListView view;
-    private Context context;
+    private List<MovieModel> mMovies = new ArrayList<>();
+    private ClicableMovieListView mClicableView;
+    private Context mContext;
 
     public MovieListAdapter(ClicableMovieListView moviesView) {
-        view = moviesView;
+        mClicableView = moviesView;
     }
 
     @NonNull
     @Override
     public MovieListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
-        View rootView = LayoutInflater.from(context).inflate(R.layout.movie_item, parent, false);
+        mContext = parent.getContext();
+        View rootView = LayoutInflater.from(mContext).inflate(R.layout.model_movie, parent, false);
         return new ViewHolder(rootView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.itemView.setOnClickListener(holder);
-        holder.movie = movies.get(position);
-        holder.name.setText(movies.get(position).getTitle());
+        holder.movie = mMovies.get(position);
+        holder.name.setText(mMovies.get(position).getTitle());
 
         if (holder.movie.getPosterPath() == null) {
             holder.poster.setImageResource(R.drawable.noimagefound);
         } else {
             Glide
-                    .with(context)
+                    .with(mContext)
                     .asBitmap()
                     .apply(getGlideOptions())
                     .load(ApiConstants.POSTER_TMDB_URL + holder.movie.getPosterPath())
@@ -81,21 +79,21 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     }
 
     private void setTitleColor(Palette palette, ViewHolder holder) {
-        holder.titleBackground.setBackgroundColor(palette.getVibrantColor(context
+        holder.titleBackground.setBackgroundColor(palette.getVibrantColor(mContext
                 .getResources().getColor(R.color.colorOpacity)));
     }
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return mMovies.size();
     }
 
     public MovieModel getItem(int position) {
-        return movies.get(position);
+        return mMovies.get(position);
     }
 
     public void addMovies(List<MovieModel> movieItemList) {
-        movies.addAll(movieItemList);
+        mMovies.addAll(movieItemList);
         notifyDataSetChanged();
     }
 
@@ -105,7 +103,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     }
 
     private void clearList() {
-        movies.clear();
+        mMovies.clear();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -126,7 +124,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
         @Override
         public void onClick(View view) {
-            MovieListAdapter.this.view.onMovieClicked(movie);
+            MovieListAdapter.this.mClicableView.onMovieClicked(movie, view);
         }
     }
 }

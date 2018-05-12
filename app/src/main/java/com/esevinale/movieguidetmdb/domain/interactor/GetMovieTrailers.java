@@ -15,16 +15,16 @@ import io.reactivex.Flowable;
 @PerActivity
 public class GetMovieTrailers extends UseCase<List<Trailer>, Integer> {
 
-    private final TrailerRepository trailerRepository;
+    private final TrailerRepository mTrailerRepository;
 
     @Inject
     GetMovieTrailers(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, TrailerRepository trailerRepository) {
         super(threadExecutor, postExecutionThread);
-        this.trailerRepository = trailerRepository;
+        this.mTrailerRepository = trailerRepository;
     }
 
     @Override
     Flowable<List<Trailer>> buildUseCaseFlowable(Integer id) {
-        return trailerRepository.trailers(id);
+        return mTrailerRepository.trailers(id);
     }
 }

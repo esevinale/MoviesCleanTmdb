@@ -1,32 +1,28 @@
 package com.esevinale.movieguidetmdb.data.repository;
 
 import com.esevinale.movieguidetmdb.data.entity.mapper.MovieDetailsMapper;
-import com.esevinale.movieguidetmdb.data.entity.mapper.MovieImagesMapper;
 import com.esevinale.movieguidetmdb.data.repository.datasource.details.MovieDetailsDataStore;
-import com.esevinale.movieguidetmdb.data.repository.datasource.image.ImageDataStore;
+import com.esevinale.movieguidetmdb.data.repository.datasource.details.MovieDetailsDataStoreFactory;
 import com.esevinale.movieguidetmdb.domain.entity.details.MovieDetails;
-import com.esevinale.movieguidetmdb.domain.entity.image.Images;
-import com.esevinale.movieguidetmdb.domain.repository.ImageRepository;
 import com.esevinale.movieguidetmdb.domain.repository.MovieDetailsRepository;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
 
 public class MovieDetailsDataRepository implements MovieDetailsRepository {
 
-    private final MovieDetailsMapper detailsMapper;
-    private final MovieDetailsDataStore detailsDataStore;
+    private final MovieDetailsMapper mDetailsMapper;
+    private final MovieDetailsDataStoreFactory mDetailsDataStore;
 
     @Inject
-    MovieDetailsDataRepository(MovieDetailsMapper detailsMapper, MovieDetailsDataStore detailsDataStore) {
-        this.detailsMapper = detailsMapper;
-        this.detailsDataStore = detailsDataStore;
+    MovieDetailsDataRepository(MovieDetailsMapper detailsMapper, MovieDetailsDataStoreFactory detailsDataStore) {
+        this.mDetailsMapper = detailsMapper;
+        this.mDetailsDataStore = detailsDataStore;
     }
 
     @Override
     public Flowable<MovieDetails> movieDetails(int id) {
-        return detailsDataStore.movieDetails(id).map(detailsMapper::transformDetails);
+        return mDetailsDataStore.create().movieDetails(id).map(mDetailsMapper::transformDetails);
     }
 }

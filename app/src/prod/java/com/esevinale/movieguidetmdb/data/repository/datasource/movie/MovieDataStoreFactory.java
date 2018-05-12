@@ -1,7 +1,5 @@
 package com.esevinale.movieguidetmdb.data.repository.datasource.movie;
 
-import android.util.Log;
-
 import com.esevinale.movieguidetmdb.data.cache.MovieCache;
 import com.esevinale.movieguidetmdb.data.entity.mapper.MovieTypeMapper;
 import com.esevinale.movieguidetmdb.data.net.ConnectionChecker;
@@ -12,23 +10,23 @@ import javax.inject.Singleton;
 
 @Singleton
 public class MovieDataStoreFactory {
-    private final MovieCache movieCache;
-    private final MovieService movieService;
-    private final MovieTypeMapper typeMapper;
-    private final ConnectionChecker isConnection;
+    private final MovieCache mMovieCache;
+    private final MovieService mMovieService;
+    private final MovieTypeMapper mTypeMapper;
+    private final ConnectionChecker mIsConnection;
 
     @Inject
     MovieDataStoreFactory(MovieCache movieCache, MovieService movieService, MovieTypeMapper typeMapper, ConnectionChecker isConnection) {
-        this.movieCache = movieCache;
-        this.movieService = movieService;
-        this.typeMapper = typeMapper;
-        this.isConnection = isConnection;
+        this.mMovieCache = movieCache;
+        this.mMovieService = movieService;
+        this.mTypeMapper = typeMapper;
+        this.mIsConnection = isConnection;
     }
 
     public MovieDataStore create() {
-        if (!isConnection.isOnline() && movieCache.isCached())
-            return new MovieLocalDataStore(movieCache);
+        if (!mIsConnection.isOnline() && mMovieCache.isCached())
+            return new MovieLocalDataStore(mMovieCache);
         else
-            return new MovieCloudDataStore(movieCache, movieService, typeMapper);
+            return new MovieCloudDataStore(mMovieCache, mMovieService, mTypeMapper);
     }
 }

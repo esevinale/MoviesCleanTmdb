@@ -18,7 +18,7 @@ import dagger.android.support.AndroidSupportInjection;
 public class UpcomingMovieListFragment extends MovieListFragment {
 
     @Inject
-    MovieUpcomingPresenter presenter;
+    MovieUpcomingPresenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,13 +28,13 @@ public class UpcomingMovieListFragment extends MovieListFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        presenter.setView(this);
+        mPresenter.setView(this);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     protected MovieListPresenter getPresenter() {
-        return presenter;
+        return mPresenter;
     }
 
 

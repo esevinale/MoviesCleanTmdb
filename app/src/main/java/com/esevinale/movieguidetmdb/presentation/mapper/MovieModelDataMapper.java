@@ -3,7 +3,6 @@ package com.esevinale.movieguidetmdb.presentation.mapper;
 import com.esevinale.movieguidetmdb.domain.entity.Movie;
 import com.esevinale.movieguidetmdb.presentation.internal.di.scopes.PerActivity;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
-import com.esevinale.movieguidetmdb.presentation.model.MyInteger;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -3,7 +3,6 @@ package com.esevinale.movieguidetmdb.presentation.view.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +12,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +32,7 @@ import com.esevinale.movieguidetmdb.presentation.model.details.MovieDetailsModel
 import com.esevinale.movieguidetmdb.presentation.model.details.ProductionCompanyModel;
 import com.esevinale.movieguidetmdb.presentation.presenter.MovieDetailsPresenter;
 import com.esevinale.movieguidetmdb.presentation.view.MovieDetailsView;
+import com.esevinale.movieguidetmdb.presentation.view.activity.MovieDetailsActivity;
 import com.esevinale.movieguidetmdb.presentation.view.utils.Constants;
 
 import java.text.DecimalFormat;
@@ -46,7 +45,6 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 
 public class MovieDetailsFragment extends BaseFragment implements MovieDetailsView {
@@ -87,7 +85,7 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     LinearLayout siteLayout;
 
     @Inject
-    MovieDetailsPresenter movieDetailsPresenter;
+    MovieDetailsPresenter mMovieDetailsPresenter;
 
 
     public static MovieDetailsFragment getInstance(MovieModel movie) {
@@ -106,8 +104,8 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        movieDetailsPresenter.setView(this);
-        mProgressBar = getBaseActivity().getProgressBar();
+        mMovieDetailsPresenter.setView(this);
+        mProgressBar = getDetailsActivity().getProgressBar();
         View view = super.onCreateView(inflater, container, savedInstanceState);
         setUpActionBar();
         return view;
@@ -115,11 +113,11 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
 
 
     private void setUpActionBar() {
-        getBaseActivity().setSupportActionBar(toolbar);
-        ActionBar actionBar = getBaseActivity().getSupportActionBar();
+        getDetailsActivity().setSupportActionBar(toolbar);
+        ActionBar actionBar = getDetailsActivity().getSupportActionBar();
         if (actionBar == null)
             return;
-        getBaseActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getDetailsActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -127,25 +125,25 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
         super.onViewCreated(view, savedInstanceState);
         Bundle extras = getArguments();
         if (extras != null && extras.containsKey(Constants.MOVIE_MODEL))
-            movieDetailsPresenter.initialize(getArguments().getParcelable(Constants.MOVIE_MODEL));
+            mMovieDetailsPresenter.initialize(getArguments().getParcelable(Constants.MOVIE_MODEL));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        movieDetailsPresenter.resume();
+        mMovieDetailsPresenter.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        movieDetailsPresenter.pause();
+        mMovieDetailsPresenter.pause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        movieDetailsPresenter.destroy();
+        mMovieDetailsPresenter.destroy();
     }
 
     @Override
@@ -250,17 +248,17 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
         trailerSection.setVisibility(View.VISIBLE);
 
         this.trailersll.removeAllViews();
-        LayoutInflater inflater = getBaseActivity().getLayoutInflater();
+        LayoutInflater inflater = getDetailsActivity().getLayoutInflater();
         RequestOptions options = new RequestOptions()
                 .placeholder(R.color.colorPrimary)
                 .centerCrop()
                 .override(150, 150);
 
         for (TrailerModel trailer : trailers) {
-            View thumbContainer = inflater.inflate(R.layout.video_model, this.trailersll, false);
-            ImageView thumbView = ButterKnife.findById(thumbContainer, R.id.video_poster);
+            View thumbContainer = inflater.inflate(R.layout.model_video, this.trailersll, false);
+            ImageView thumbView = thumbContainer.findViewById(R.id.video_poster);
             thumbView.requestLayout();
-            thumbView.setOnClickListener(view -> movieDetailsPresenter.onTrailerClicked(ApiConstants.BASE_YOUTUBE_URL + "?v=" + trailer.getKey()));
+            thumbView.setOnClickListener(view -> mMovieDetailsPresenter.onTrailerClicked(ApiConstants.BASE_YOUTUBE_URL + "?v=" + trailer.getKey()));
             Glide.with(context())
                     .load(String.format(ApiConstants.POSTER_YOUTUBE_URL, trailer.getKey()))
                     .apply(options)
@@ -302,6 +300,10 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
 
     @Override
     public Context context() {
-        return getBaseActivity().getApplicationContext();
+        return getDetailsActivity().getApplicationContext();
+    }
+
+    private MovieDetailsActivity getDetailsActivity() {
+        return (MovieDetailsActivity) getActivity();
     }
 }

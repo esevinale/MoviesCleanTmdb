@@ -3,14 +3,13 @@ package com.esevinale.movieguidetmdb.presentation.view.fragment.tabFragments;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,8 +35,8 @@ public abstract class MovieListFragment extends BaseFragment implements Clicable
     SwipeRefreshLayout mSwipe;
     @BindView(R.id.rv_movie)
     RecyclerView mRecyclerView;
-    private MovieListAdapter movieListAdapter;
-    private View transactionView;
+    private MovieListAdapter mMovieListAdapter;
+    private View mSelectedView;
 
     @Override
     protected int getMainContentLayout() {
@@ -61,8 +60,8 @@ public abstract class MovieListFragment extends BaseFragment implements Clicable
     }
 
     private void setUpAdapter() {
-        movieListAdapter = new MovieListAdapter(this);
-        mRecyclerView.setAdapter(movieListAdapter);
+        mMovieListAdapter = new MovieListAdapter(this);
+        mRecyclerView.setAdapter(mMovieListAdapter);
     }
 
     private void setUpRecyclerView() {
@@ -72,7 +71,7 @@ public abstract class MovieListFragment extends BaseFragment implements Clicable
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (myGridLayoutManager.isOnNextPagePosition())
-                    getPresenter().loadNextMovies((movieListAdapter.getItemCount() / 20) + 1);
+                    getPresenter().loadNextMovies((mMovieListAdapter.getItemCount() / 20) + 1);
             }
         });
 
@@ -106,18 +105,25 @@ public abstract class MovieListFragment extends BaseFragment implements Clicable
 
     @Override
     public void viewMovie(MovieModel movieModel) {
-        Intent intent = new Intent(getBaseActivity(), MovieDetailsActivity.class);
-        Bundle extras = new Bundle();
-        extras.putInt(Constants.MOVIE_ID, movieModel.getId());
-        extras.putParcelable(Constants.MOVIE_MODEL, movieModel);
-        intent.putExtras(extras);
-        startActivity(intent);
+        Bundle bundle = null;
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            View v = mSelectedView.findViewById(R.id.movie_poster);
+            v.setTransitionName(getMainActivity().getString(R.string.transaction_name));
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getMainActivity(), v, getMainActivity().getString(R.string.transaction_name));
+            bundle = options.toBundle();
+        }
+        Intent intent = new Intent(getMainActivity(), MovieDetailsActivity.class);
+        intent.putExtra(Constants.MOVIE_MODEL, movieModel);
+        if (bundle == null)
+            startActivity(intent);
+        else
+            startActivity(intent, bundle);
     }
 
     private void setUpSwipeToRefreshLayout() {
         mSwipe.setOnRefreshListener(this::loadRefresh);
         mSwipe.setColorSchemeResources(R.color.colorAccent);
-        mProgressBar = getBaseActivity().getProgressBar();
+        mProgressBar = getMainActivity().getProgressBar();
     }
 
     private void loadRefresh() {
@@ -126,12 +132,12 @@ public abstract class MovieListFragment extends BaseFragment implements Clicable
 
     @Override
     public void renderMovieList(List<MovieModel> movieModelList) {
-        movieListAdapter.setMovies(movieModelList);
+        mMovieListAdapter.setMovies(movieModelList);
     }
 
     @Override
     public void addMoviesToList(List<MovieModel> movieModelList) {
-        movieListAdapter.addMovies(movieModelList);
+        mMovieListAdapter.addMovies(movieModelList);
     }
 
     @Override
@@ -163,11 +169,16 @@ public abstract class MovieListFragment extends BaseFragment implements Clicable
 
     @Override
     public Context context() {
-        return getBaseActivity().getApplicationContext();
+        return getMainActivity().getApplicationContext();
     }
 
     @Override
-    public void onMovieClicked(MovieModel movie) {
+    public void onMovieClicked(MovieModel movie, View view) {
+        mSelectedView = view;
         getPresenter().onMovieClicked(movie);
+    }
+
+    private MainActivity getMainActivity() {
+        return (MainActivity) getActivity();
     }
 }

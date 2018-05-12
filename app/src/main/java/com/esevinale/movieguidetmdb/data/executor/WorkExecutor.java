@@ -1,7 +1,6 @@
 package com.esevinale.movieguidetmdb.data.executor;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.esevinale.movieguidetmdb.domain.executor.ThreadExecutor;
 
@@ -12,11 +11,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 public class WorkExecutor implements ThreadExecutor {
 
-    private final ThreadPoolExecutor threadPoolExecutor;
+    private final ThreadPoolExecutor mThreadPoolExecutor;
 
     private static final int CORE_POOL_SIZE = 3;
     private static final int MAX_POOL_SIZE = 5;
@@ -26,7 +24,7 @@ public class WorkExecutor implements ThreadExecutor {
 
     @Inject
     WorkExecutor() {
-        threadPoolExecutor = new ThreadPoolExecutor(
+        mThreadPoolExecutor = new ThreadPoolExecutor(
                 CORE_POOL_SIZE,
                 MAX_POOL_SIZE,
                 KEEP_ALIVE_TIME,
@@ -37,7 +35,7 @@ public class WorkExecutor implements ThreadExecutor {
 
     @Override
     public void execute(@NonNull Runnable runnable) {
-        threadPoolExecutor.execute(runnable);
+        mThreadPoolExecutor.execute(runnable);
     }
 
     private static class WorkThreadFactory implements ThreadFactory {

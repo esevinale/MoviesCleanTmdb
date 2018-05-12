@@ -11,33 +11,33 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public abstract class UseCase<T, Params> {
 
-    private final CompositeDisposable disposables;
-    private final ThreadExecutor threadExecutor;
-    private final PostExecutionThread postExecutionThread;
+    private final CompositeDisposable mDisposables;
+    private final ThreadExecutor mThreadExecutor;
+    private final PostExecutionThread mPostExecutionThread;
 
     UseCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
-        this.threadExecutor = threadExecutor;
-        this.postExecutionThread = postExecutionThread;
-        disposables = new CompositeDisposable();
+        this.mThreadExecutor = threadExecutor;
+        this.mPostExecutionThread = postExecutionThread;
+        mDisposables = new CompositeDisposable();
     }
 
     abstract Flowable<T> buildUseCaseFlowable(Params params);
 
     public void execute(DisposableSubscriber<T> subscriber, Params params) {
         final Flowable<T> flowable = buildUseCaseFlowable(params)
-                .subscribeOn(Schedulers.from(threadExecutor))
-                .observeOn(postExecutionThread.getScheduler());
+                .subscribeOn(Schedulers.from(mThreadExecutor))
+                .observeOn(mPostExecutionThread.getScheduler());
 
         addDisposable(flowable.subscribeWith(subscriber));
     }
 
     public void dispose() {
-        if (!disposables.isDisposed()) {
-            disposables.dispose();
+        if (!mDisposables.isDisposed()) {
+            mDisposables.dispose();
         }
     }
 
     private void addDisposable(Disposable disposable) {
-        disposables.add(disposable);
+        mDisposables.add(disposable);
     }
 }

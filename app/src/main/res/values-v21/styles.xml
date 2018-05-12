@@ -11,10 +11,19 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
+
 
     <style name="TranslucentStatusBar" parent="AppTheme.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/poster_transaction
+        </item>
+
+        <item name="android:windowSharedElementExitTransition">
+            @transition/poster_transaction
+        </item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

@@ -10,27 +10,28 @@ import com.esevinale.movieguidetmdb.presentation.mapper.MovieModelDataMapper;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.presenter.Presenter;
 import com.esevinale.movieguidetmdb.presentation.view.MovieListView;
+import com.esevinale.movieguidetmdb.presentation.view.utils.EspressoIdlingResource;
 
 import java.util.List;
 
 public abstract class MovieListPresenter implements Presenter {
 
-    private MovieListView movieListView;
+    private MovieListView mMovieListView;
 
-    private final MovieModelDataMapper movieModelDataMapper;
-    private final UseCase getMovieList;
+    private final MovieModelDataMapper mMovieModelDataMapper;
+    private final UseCase mGetMovieList;
 
     private boolean mIsInLoading;
 
-    private final int FIRST_PAGE = 1;
+    private final static int FIRST_PAGE = 1;
 
     MovieListPresenter(UseCase getMovieList, MovieModelDataMapper movieModelDataMapper) {
-        this.getMovieList = getMovieList;
-        this.movieModelDataMapper = movieModelDataMapper;
+        this.mGetMovieList = getMovieList;
+        this.mMovieModelDataMapper = movieModelDataMapper;
     }
 
     public void setView(@NonNull MovieListView view) {
-        this.movieListView = view;
+        this.mMovieListView = view;
     }
 
     @Override
@@ -45,8 +46,8 @@ public abstract class MovieListPresenter implements Presenter {
 
     @Override
     public void destroy() {
-        this.getMovieList.dispose();
-        this.movieListView = null;
+        this.mGetMovieList.dispose();
+        this.mMovieListView = null;
     }
 
     public void initialize() {
@@ -70,56 +71,57 @@ public abstract class MovieListPresenter implements Presenter {
     }
 
     public void onMovieClicked(MovieModel movieModel) {
-        this.movieListView.viewMovie(movieModel);
+        this.mMovieListView.viewMovie(movieModel);
     }
 
     private void showProgress(ProgressType progressType) {
         switch (progressType) {
             case Refreshing:
-                movieListView.showRefreshing();
+                mMovieListView.showRefreshing();
                 break;
             case ListProgress:
-                movieListView.showLoading();
+                mMovieListView.showLoading();
                 break;
         }
     }
 
     private void hideProgress(ProgressType progressType) {
-        mIsInLoading = false;
         switch (progressType) {
             case Refreshing:
-                movieListView.hideRefreshing();
+                mMovieListView.hideRefreshing();
                 break;
             case ListProgress:
-                movieListView.hideLoading();
+                mMovieListView.hideLoading();
                 break;
         }
+        mIsInLoading = false;
     }
 
     private void hideAllProgress() {
-        movieListView.hideLoading();
-        movieListView.hideRefreshing();
+        mMovieListView.hideLoading();
+        mMovieListView.hideRefreshing();
     }
 
     private void showErrorMessage() {
-        this.movieListView.showError(movieListView.context().getString(R.string.default_error));
+        this.mMovieListView.showError(mMovieListView.context().getString(R.string.default_error));
     }
 
     private void showMovieListInView(List<Movie> movieList) {
         final List<MovieModel> movieModels =
-                this.movieModelDataMapper.transform(movieList);
-        this.movieListView.renderMovieList(movieModels);
+                this.mMovieModelDataMapper.transform(movieList);
+        this.mMovieListView.renderMovieList(movieModels);
     }
 
     private void addMovieListInView(List<Movie> movieList) {
         final List<MovieModel> movieModels =
-                this.movieModelDataMapper.transform(movieList);
-        this.movieListView.addMoviesToList(movieModels);
+                this.mMovieModelDataMapper.transform(movieList);
+        this.mMovieListView.addMoviesToList(movieModels);
     }
 
     @SuppressWarnings("unchecked")
     private void getMovieList(int page, ProgressType progressType) {
-        this.getMovieList.execute(new MovieListSubscriber(progressType), page);
+        EspressoIdlingResource.increment();
+        this.mGetMovieList.execute(new MovieListSubscriber(progressType), page);
     }
 
     private final class MovieListSubscriber extends DefaultSubscriber<List<Movie>> {
@@ -134,6 +136,7 @@ public abstract class MovieListPresenter implements Presenter {
         @Override
         public void onComplete() {
             MovieListPresenter.this.hideProgress(progressType);
+            EspressoIdlingResource.decrement();
         }
 
         @Override

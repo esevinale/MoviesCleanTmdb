@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.esevinale.movieguidetmdb.presentation.AndroidApp;
 import com.esevinale.movieguidetmdb.presentation.internal.di.modules.AppModule;
-import com.esevinale.movieguidetmdb.presentation.internal.di.modules.NetModule;
-import com.esevinale.movieguidetmdb.presentation.view.activity.BaseActivity;
 
 import javax.inject.Singleton;
 

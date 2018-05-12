@@ -15,16 +15,16 @@ import io.reactivex.Flowable;
 @PerActivity
 public class GetNowPlayingMovieList extends UseCase<List<Movie>, Integer> {
 
-    private final MovieRepository movieRepository;
+    private final MovieRepository mMovieRepository;
 
     @Inject
     GetNowPlayingMovieList(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, MovieRepository movieRepository) {
         super(threadExecutor, postExecutionThread);
-        this.movieRepository = movieRepository;
+        this.mMovieRepository = movieRepository;
     }
 
     @Override
     Flowable<List<Movie>> buildUseCaseFlowable(Integer page) {
-        return movieRepository.nowPlayingMovies(page);
+        return mMovieRepository.nowPlayingMovies(page);
     }
 }

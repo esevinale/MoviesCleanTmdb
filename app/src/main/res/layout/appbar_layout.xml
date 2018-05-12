@@ -17,25 +17,25 @@
         android:layout_height="wrap_content">
 
         <android.support.design.widget.TabItem
-            android:id="@+id/tabItem2"
+            android:id="@+id/tab_now_playing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tab_now_playing" />
 
         <android.support.design.widget.TabItem
-            android:id="@+id/tabItem3"
+            android:id="@+id/tab_upcoming"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/upcoming" />
 
         <android.support.design.widget.TabItem
-            android:id="@+id/tabItem4"
+            android:id="@+id/tab_top_rated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/top_rated" />
 
         <android.support.design.widget.TabItem
-            android:id="@+id/tabItem5"
+            android:id="@+id/tab_popular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tab_popular" />

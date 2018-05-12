@@ -1,7 +1,5 @@
 package com.esevinale.movieguidetmdb.data.repository.datasource.movie;
 
-import android.util.Log;
-
 import com.esevinale.movieguidetmdb.data.cache.MovieCache;
 import com.esevinale.movieguidetmdb.data.entity.movies.MovieEntity;
 import com.esevinale.movieguidetmdb.data.entity.movies.MovieTypes;
@@ -12,30 +10,30 @@ import io.reactivex.Flowable;
 
 public class MovieLocalDataStore implements MovieDataStore {
 
-    private final MovieCache movieCache;
+    private final MovieCache mMovieCache;
 
     MovieLocalDataStore(MovieCache movieCache) {
-        this.movieCache = movieCache;
+        this.mMovieCache = movieCache;
     }
 
 
     @Override
     public Flowable<List<MovieEntity>> nowPlayingMovies(int page) {
-        return movieCache.get(page, MovieTypes.NowPlaying);
+        return mMovieCache.get(page, MovieTypes.NowPlaying);
     }
 
     @Override
     public Flowable<List<MovieEntity>> popularMovies(int page) {
-        return movieCache.get(page, MovieTypes.Popular);
+        return mMovieCache.get(page, MovieTypes.Popular);
     }
 
     @Override
     public Flowable<List<MovieEntity>> topRatedMovies(int page) {
-        return movieCache.get(page, MovieTypes.TopRated);
+        return mMovieCache.get(page, MovieTypes.TopRated);
     }
 
     @Override
     public Flowable<List<MovieEntity>> upcomingMovies(int page) {
-        return movieCache.get(page, MovieTypes.Upcoming);
+        return mMovieCache.get(page, MovieTypes.Upcoming);
     }
 }

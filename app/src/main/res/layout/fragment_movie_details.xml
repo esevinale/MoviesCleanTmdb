@@ -3,8 +3,8 @@
     android:id="@+id/details_container_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:layout_alignParentTop="true">
+    android:layout_alignParentTop="true"
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/collapsing_layout" />
 
@@ -20,164 +20,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/site_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:layout_margin="@dimen/element_margin"
-                android:orientation="horizontal">
+            <include layout="@layout/details_sitecompanies_section" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:src="@drawable/ic_domain" />
+            <include layout="@layout/details_overview_section" />
 
-                <TextView
-                    android:id="@+id/sites"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Sites" />
-            </LinearLayout>
+            <include layout="@layout/details_trailers_section" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:layout_margin="@dimen/element_margin"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:src="@drawable/ic_earth" />
-
-                <TextView
-                    android:id="@+id/companies"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="Complanies" />
-            </LinearLayout>
-
-           <include layout="@layout/line_decorator"/>
-
-            <TextView
-                android:id="@+id/movie_overview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/bottom_margin"
-                android:layout_marginLeft="@dimen/details_block_margin"
-                android:layout_marginRight="@dimen/details_block_margin"
-                android:layout_marginTop="@dimen/details_block_margin"
-                android:text="@string/overview"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-            <TextView
-                android:id="@+id/movie_overview_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/details_block_margin"
-                android:layout_marginRight="@dimen/details_block_margin"
-                android:layout_marginBottom="@dimen/bottom_margin"/>
-
-            <include layout="@layout/line_decorator"/>
-
-            <!--<TextView-->
-                <!--android:id="@+id/movie_rating"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="32dp"-->
-                <!--android:layout_marginLeft="16dp"-->
-                <!--android:layout_marginRight="16dp"-->
-                <!--android:gravity="center" />-->
-
-            <LinearLayout
-                android:id="@+id/trailers_section"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginBottom="@dimen/bottom_margin"
-                android:layout_marginLeft="@dimen/details_block_margin"
-                android:layout_marginRight="@dimen/details_block_margin"
-                android:layout_marginTop="@dimen/details_block_margin"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/tv_trailers"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Trailer"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:layout_marginBottom="@dimen/bottom_margin" />
-
-                <HorizontalScrollView
-                    android:id="@+id/trailers_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/bottom_margin"
-                    android:layout_marginLeft="@dimen/details_block_margin"
-                    android:layout_marginRight="@dimen/details_block_margin" >
-
-                    <LinearLayout
-                        android:id="@+id/ll_trailers"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"/>
-
-                </HorizontalScrollView>
-            </LinearLayout>
-
-            <include layout="@layout/line_decorator"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/bottom_margin"
-                android:layout_marginLeft="@dimen/details_block_margin"
-                android:layout_marginRight="@dimen/details_block_margin"
-                android:layout_marginTop="@dimen/details_block_margin"
-                android:text="@string/information"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/details_block_margin"
-                android:layout_marginBottom="@dimen/details_block_margin"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/budget"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/revenue"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="@dimen/details_block_margin">
-                    <TextView
-                        android:id="@+id/tv_budget"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:id="@+id/tv_revenue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </LinearLayout>
+            <include layout="@layout/details_information_section" />
 
         </LinearLayout>
 

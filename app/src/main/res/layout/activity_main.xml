@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".presentation.view.activity.BaseActivity">
+    tools:context=".presentation.view.activity.MainActivity">
 
     <include layout="@layout/appbar_layout" />
 

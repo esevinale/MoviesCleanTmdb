@@ -50,6 +50,9 @@ public class MovieDetailsModel {
         this.posterPath = posterPath;
     }
 
+    public MovieDetailsModel() {
+    }
+
     public String getPosterPath() {
         return posterPath;
     }

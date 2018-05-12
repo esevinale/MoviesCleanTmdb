@@ -7,20 +7,18 @@ import com.esevinale.movieguidetmdb.data.net.MovieService;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Flowable;
 
 public class TrailerCouldDataStore implements TrailerDataStore {
-    private final MovieService service;
+    private final MovieService mService;
 
-    @Inject
     TrailerCouldDataStore(MovieService service) {
-        this.service = service;
+        this.mService = service;
     }
 
     @Override
     public Flowable<List<TrailerEntity>> movieTrailers(int id) {
-        return service.getMovieTrailers(id).map(TrailerResultDTO::getResults);
+        return mService.getMovieTrailers(id).map(TrailerResultDTO::getResults);
     }
 }

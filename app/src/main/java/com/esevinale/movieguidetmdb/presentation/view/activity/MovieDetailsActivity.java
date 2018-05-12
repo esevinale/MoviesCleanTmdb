@@ -1,17 +1,19 @@
 package com.esevinale.movieguidetmdb.presentation.view.activity;
 
 import android.os.Bundle;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.app.ActionBar;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
+import com.esevinale.movieguidetmdb.presentation.view.lifecycle.ActivityLayout;
 import com.esevinale.movieguidetmdb.presentation.view.fragment.MovieDetailsFragment;
 import com.esevinale.movieguidetmdb.presentation.view.utils.Constants;
+import com.esevinale.movieguidetmdb.presentation.view.utils.EspressoIdlingResource;
 
 import javax.inject.Inject;
 
@@ -21,12 +23,16 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
-public class MovieDetailsActivity extends BaseActivity implements HasSupportFragmentInjector {
+@ActivityLayout(getLayoutId = R.layout.activity_movie_details)
+public class MovieDetailsActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
-    private MovieModel movie;
+    private MovieModel mMovie;
+
+    @BindView(R.id.progress_bar)
+    protected ProgressBar mProgressBar;
 
     @Inject
-    DispatchingAndroidInjector<Fragment> fragmentInjector;
+    DispatchingAndroidInjector<Fragment> mFragmentInjector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,26 +44,21 @@ public class MovieDetailsActivity extends BaseActivity implements HasSupportFrag
 
     private void initializeActivity(Bundle savedInstanceState) {
         if (savedInstanceState == null)
-            movie = getIntent().getParcelableExtra(Constants.MOVIE_MODEL);
+            mMovie = getIntent().getParcelableExtra(Constants.MOVIE_MODEL);
         else
-            movie = savedInstanceState.getParcelable(Constants.MOVIE_MODEL);
+            mMovie = savedInstanceState.getParcelable(Constants.MOVIE_MODEL);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.details_wrapper, MovieDetailsFragment.getInstance(movie))
+                .replace(R.id.details_wrapper, MovieDetailsFragment.getInstance(mMovie))
                 .commit();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         if (outState != null) {
-            outState.putParcelable(Constants.MOVIE_MODEL, movie);
+            outState.putParcelable(Constants.MOVIE_MODEL, mMovie);
         }
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public int getContentLayout() {
-        return R.layout.activity_movie_details;
     }
 
     @Override
@@ -75,6 +76,15 @@ public class MovieDetailsActivity extends BaseActivity implements HasSupportFrag
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
-        return fragmentInjector;
+        return mFragmentInjector;
+    }
+
+    public ProgressBar getProgressBar() {
+        return mProgressBar;
+    }
+
+    @VisibleForTesting
+    public IdlingResource getCountingIdlingResource() {
+        return EspressoIdlingResource.getIdlingResource();
     }
 }

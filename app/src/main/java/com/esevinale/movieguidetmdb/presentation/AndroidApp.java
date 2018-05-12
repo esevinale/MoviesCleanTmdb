@@ -5,6 +5,7 @@ import android.app.Application;
 
 import com.esevinale.movieguidetmdb.BuildConfig;
 import com.esevinale.movieguidetmdb.presentation.internal.di.components.DaggerAppComponent;
+import com.esevinale.movieguidetmdb.presentation.view.lifecycle.ActivityCallbacks;
 import com.squareup.leakcanary.LeakCanary;
 
 import javax.inject.Inject;
@@ -18,13 +19,14 @@ import io.realm.RealmConfiguration;
 public class AndroidApp extends Application implements HasActivityInjector {
 
     @Inject
-    DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+    DispatchingAndroidInjector<Activity> mDispatchingAndroidInjector;
 
     @Override public void onCreate() {
         super.onCreate();
         this.initializeInjector();
         this.initializeLeakDetection();
         this.initRealm();
+        registerActivityLifecycleCallbacks(new ActivityCallbacks());
     }
 
     private void initializeInjector() {
@@ -62,6 +64,6 @@ public class AndroidApp extends Application implements HasActivityInjector {
 
     @Override
     public AndroidInjector<Activity> activityInjector() {
-        return dispatchingAndroidInjector;
+        return mDispatchingAndroidInjector;
     }
 }
