@@ -72,6 +72,11 @@ public class MovieDetailsActivityTest {
         onView(withId(R.id.trailers_section)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
 
+    @Test
+    public void castSectionTest() throws Exception {
+        onView(withId(R.id.cast_section)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+    }
+
     @After
     public void tearDown() {
         IdlingRegistry.getInstance().unregister(mActivityTestRule.getActivity().getCountingIdlingResource());

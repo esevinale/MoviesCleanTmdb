@@ -1,7 +1,6 @@
 package com.esevinale.movieguidetmdb.presentation.view.activity;
 
 import android.os.SystemClock;
-import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
@@ -13,6 +12,8 @@ import android.view.View;
 
 import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.data.entity.movies.MovieEntity;
+import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
+import com.esevinale.movieguidetmdb.presentation.view.utils.Constants;
 
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -27,18 +28,21 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.swipeRight;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.BundleMatchers.hasEntry;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasExtras;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 import static android.support.test.espresso.matcher.ViewMatchers.isFocusable;
 import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.core.AllOf.allOf;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
@@ -69,7 +73,7 @@ public class MainActivityTest {
     @Test
     public void onMovieClick() {
         onView(allOf(isDisplayed(), withId(R.id.rv_movie))).perform(actionOnItemAtPosition(10, click()));
-        Intents.intended(hasComponent(MovieDetailsActivity.class.getName()));
+        intended(hasComponent(MovieDetailsActivity.class.getName()));
     }
 
     @Test
@@ -80,7 +84,7 @@ public class MainActivityTest {
         onView(allOf(isDisplayed(), withId(R.id.movie_swipe))).perform(withCustomConstraints(swipeLeft(), isDisplayingAtLeast(85)));
         SystemClock.sleep(300);
         onView(allOf(isDisplayed(), withId(R.id.rv_movie))).perform(actionOnItemAtPosition(10, click()));
-        Intents.intended(hasComponent(MovieDetailsActivity.class.getName()));
+        intended(hasComponent(MovieDetailsActivity.class.getName()));
     }
 
     @Test
@@ -112,12 +116,24 @@ public class MainActivityTest {
 
     @Test
     public void realmTest() {
-        SystemClock.sleep(500);
+//        SystemClock.sleep(500);
         int savedCount = Realm.getDefaultInstance()
                 .where(MovieEntity.class)
                 .findAll()
                 .size();
         assertEquals(80, savedCount);
+    }
+
+
+    @Test
+    public void intentTest() throws Exception {
+        onView(allOf(isDisplayed(), withId(R.id.rv_movie)))
+                .perform(actionOnItemAtPosition(0, click()));
+        intended(
+                hasExtras(
+                        hasEntry(equalTo(Constants.MOVIE_MODEL), equalTo(new MovieModel(269149, "(Test) Zootopia", "/sM33SANp9z6rXW8Itn7NnG1GOEs.jpg", "/mhdeE1yShHTaDbJVdWyTlzFvNkr.jpg")))
+                )
+        );
     }
 
 

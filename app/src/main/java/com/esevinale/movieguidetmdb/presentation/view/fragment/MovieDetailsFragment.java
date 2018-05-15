@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -27,12 +29,14 @@ import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.data.net.ApiConstants;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.model.TrailerModel;
+import com.esevinale.movieguidetmdb.presentation.model.details.CastModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.GenreModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.MovieDetailsModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.ProductionCompanyModel;
 import com.esevinale.movieguidetmdb.presentation.presenter.MovieDetailsPresenter;
 import com.esevinale.movieguidetmdb.presentation.view.MovieDetailsView;
 import com.esevinale.movieguidetmdb.presentation.view.activity.MovieDetailsActivity;
+import com.esevinale.movieguidetmdb.presentation.view.adapters.CastListAdapter;
 import com.esevinale.movieguidetmdb.presentation.view.utils.Constants;
 
 import java.text.DecimalFormat;
@@ -79,13 +83,19 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     CollapsingToolbarLayout collapsingToolbar;
     @BindView(R.id.trailers_section)
     LinearLayout trailerSection;
+    @BindView(R.id.cast_section)
+    LinearLayout castSection;
     @BindView(R.id.ll_trailers)
     LinearLayout trailersll;
     @BindView(R.id.site_layout)
     LinearLayout siteLayout;
+    @BindView(R.id.rv_details_cast)
+    RecyclerView mRecyclerView;
 
     @Inject
     MovieDetailsPresenter mMovieDetailsPresenter;
+
+    private CastListAdapter mCastListAdapter;
 
 
     public static MovieDetailsFragment getInstance(MovieModel movie) {
@@ -268,6 +278,19 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     }
 
     @Override
+    public void showCast(List<CastModel> cast) {
+        castSection.setVisibility(View.VISIBLE);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getDetailsActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mCastListAdapter = new CastListAdapter(this);
+        mRecyclerView.setAdapter(mCastListAdapter);
+
+        mCastListAdapter.setCast(cast);
+    }
+
+    @Override
     public void startTrailerIntent(String url) {
         Intent playVideoIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(playVideoIntent);
@@ -285,12 +308,12 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
 
     @Override
     public void showRefreshing() {
-//not implemented
+        //not implemented
     }
 
     @Override
     public void hideRefreshing() {
-//not implemented
+        //not implemented
     }
 
     @Override
@@ -305,5 +328,15 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
 
     private MovieDetailsActivity getDetailsActivity() {
         return (MovieDetailsActivity) getActivity();
+    }
+
+    @Override
+    public void onCastClicked(CastModel castModel, View view) {
+        //not implemented
+    }
+
+    @Override
+    public void viewCast(CastModel castModel) {
+        //not implemented
     }
 }

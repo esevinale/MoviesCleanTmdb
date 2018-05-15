@@ -1,8 +1,6 @@
 package com.esevinale.movieguidetmdb.data.repository.datasource.details;
 
 import com.esevinale.movieguidetmdb.data.net.MovieService;
-import com.esevinale.movieguidetmdb.data.repository.datasource.image.ImageDataStore;
-import com.esevinale.movieguidetmdb.data.repository.datasource.image.ImagesCouldDataStore;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

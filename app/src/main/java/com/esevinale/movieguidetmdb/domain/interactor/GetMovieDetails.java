@@ -1,26 +1,28 @@
 package com.esevinale.movieguidetmdb.domain.interactor;
 
-import com.esevinale.movieguidetmdb.domain.entity.details.MovieDetails;
+import com.esevinale.movieguidetmdb.domain.entity.details.MovieDetailsDomainModel;
 import com.esevinale.movieguidetmdb.domain.executor.PostExecutionThread;
 import com.esevinale.movieguidetmdb.domain.executor.ThreadExecutor;
 import com.esevinale.movieguidetmdb.domain.repository.MovieDetailsRepository;
+import com.esevinale.movieguidetmdb.presentation.internal.di.scopes.PerActivity;
 
 import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 
-public class GetMovieDetails extends UseCase<MovieDetails, Integer> {
+@PerActivity
+public class GetMovieDetails extends UseCase<MovieDetailsDomainModel, Integer> {
 
-    private final MovieDetailsRepository mDetailsRepository;
+    private final MovieDetailsRepository mMovieDetailsRepository;
 
     @Inject
-    GetMovieDetails(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, MovieDetailsRepository detailsRepository) {
+    GetMovieDetails(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread, MovieDetailsRepository movieDetailsRepository) {
         super(threadExecutor, postExecutionThread);
-        this.mDetailsRepository = detailsRepository;
+        this.mMovieDetailsRepository = movieDetailsRepository;
     }
 
     @Override
-    Flowable<MovieDetails> buildUseCaseFlowable(Integer id) {
-        return mDetailsRepository.movieDetails(id);
+    Flowable<MovieDetailsDomainModel> buildUseCaseFlowable(Integer id) {
+        return mMovieDetailsRepository.movieDetails(id);
     }
 }

@@ -11,19 +11,17 @@ import java.util.List;
 import javax.inject.Inject;
 
 @PerActivity
-public class MovieModelDataMapper {
+public class MovieModelMapper {
 
     @Inject
-    public MovieModelDataMapper() {
+    public MovieModelMapper() {
     }
 
     public MovieModel transform(Movie movie) {
         if (movie == null) {
             throw new IllegalArgumentException("Cannot transform a null value");
         }
-        return new MovieModel(movie.getVoteCount(), movie.getId(), movie.getVideo(), movie.getVoteAverage(), movie.getTitle(), movie.getPopularity(),
-                movie.getPosterPath(), movie.getOriginalLanguage(), movie.getOriginalTitle(), movie.getBackdropPath(), movie.getAdult(),
-                movie.getOverview(), movie.getReleaseDate());
+        return new MovieModel(movie.getId(), movie.getTitle(), movie.getPosterPath(),movie.getBackdropPath());
     }
 
     public List<MovieModel> transform(List<Movie> movieCollection) {

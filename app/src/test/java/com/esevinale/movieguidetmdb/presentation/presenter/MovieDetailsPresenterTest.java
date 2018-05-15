@@ -5,17 +5,18 @@ import android.content.Context;
 import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.data.net.ApiConstants;
 import com.esevinale.movieguidetmdb.domain.entity.Trailer;
+import com.esevinale.movieguidetmdb.domain.entity.details.Cast;
 import com.esevinale.movieguidetmdb.domain.entity.details.MovieDetails;
+import com.esevinale.movieguidetmdb.domain.entity.details.MovieDetailsDomainModel;
 import com.esevinale.movieguidetmdb.domain.interactor.DefaultSubscriber;
 import com.esevinale.movieguidetmdb.domain.interactor.GetMovieDetails;
-import com.esevinale.movieguidetmdb.domain.interactor.GetMovieImages;
-import com.esevinale.movieguidetmdb.domain.interactor.GetMovieTrailers;
-import com.esevinale.movieguidetmdb.presentation.mapper.MovieDetailsDataMapper;
-import com.esevinale.movieguidetmdb.presentation.mapper.MovieImagesDataMapper;
-import com.esevinale.movieguidetmdb.presentation.mapper.TrailerModelDataMapper;
+import com.esevinale.movieguidetmdb.presentation.mapper.CastModelMapper;
+import com.esevinale.movieguidetmdb.presentation.mapper.MovieDetailsModelMapper;
+import com.esevinale.movieguidetmdb.presentation.mapper.TrailerModelMapper;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.view.MovieDetailsView;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +28,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
@@ -47,27 +52,24 @@ public class MovieDetailsPresenterTest {
     @Mock
     private MovieDetailsView movieDetailsView;
     @Mock
-    private GetMovieTrailers getMovieTrailers;
+    private TrailerModelMapper trailerModelDataMapper;
     @Mock
-    private GetMovieImages getMovieImages;
+    private MovieDetailsModelMapper movieDetailsDataMapper;
+    @Mock
+    private CastModelMapper castModelMapper;
     @Mock
     private GetMovieDetails getMovieDetails;
-    @Mock
-    private TrailerModelDataMapper trailerModelDataMapper;
-    @Mock
-    private MovieImagesDataMapper movieImagesDataMapper;
-    @Mock
-    private MovieDetailsDataMapper movieDetailsDataMapper;
     @Captor
-    private ArgumentCaptor<DefaultSubscriber<List<Trailer>>> trailersSubscriberCaptor;
-    @Captor
-    private ArgumentCaptor<DefaultSubscriber<MovieDetails>> detailsSubscriberCaptor;
+    private ArgumentCaptor<DefaultSubscriber<MovieDetailsDomainModel>> detailsSubscriberCaptor;
 
     @Before
     public void setUp() {
-        presenter = new MovieDetailsPresenter(getMovieTrailers, getMovieImages, getMovieDetails,
-                trailerModelDataMapper, movieImagesDataMapper, movieDetailsDataMapper);
+        presenter = new MovieDetailsPresenter(trailerModelDataMapper, movieDetailsDataMapper, getMovieDetails,
+                castModelMapper);
         presenter.setView(movieDetailsView);
+
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(scheduler -> Schedulers.trampoline());
     }
 
     @Test
@@ -78,8 +80,6 @@ public class MovieDetailsPresenterTest {
     @Test
     public void destroy() {
         presenter.destroy();
-        verify(getMovieTrailers).dispose();
-        verify(getMovieImages).dispose();
         verify(getMovieDetails).dispose();
     }
 
@@ -92,18 +92,14 @@ public class MovieDetailsPresenterTest {
 
         verify(getMovieDetails).execute(detailsSubscriberCaptor.capture(), any(Integer.class));
 
-        MovieDetails md = getMovieDetails();
-        detailsSubscriberCaptor.getValue().onNext(md);
+        MovieDetailsDomainModel domainModel = getDomainModel();
+        detailsSubscriberCaptor.getValue().onNext(domainModel);
 
-        verify(movieDetailsView).showMovieDetails(movieDetailsDataMapper.transformDetails(md));
-
+        verify(movieDetailsView).showMovieDetails(movieDetailsDataMapper.transformDetails(domainModel.getMovieDetails()));
+        verify(movieDetailsView).showTrailers(trailerModelDataMapper.transform(domainModel.getTrailers()));
+        verify(movieDetailsView).showCast(castModelMapper.transform(domainModel.getCast()));
         detailsSubscriberCaptor.getValue().onComplete();
         verify(movieDetailsView).hideLoading();
-
-        verify(getMovieTrailers).execute(trailersSubscriberCaptor.capture(), any(Integer.class));
-        List<Trailer> trailers = getTrailerList();
-        trailersSubscriberCaptor.getValue().onNext(trailers);
-        verify(movieDetailsView).showTrailers(trailerModelDataMapper.transform(trailers));
     }
 
     @Test
@@ -115,17 +111,14 @@ public class MovieDetailsPresenterTest {
 
         verify(getMovieDetails).execute(detailsSubscriberCaptor.capture(), any(Integer.class));
 
-        MovieDetails md = getMovieDetails();
-        detailsSubscriberCaptor.getValue().onNext(md);
+        MovieDetailsDomainModel domainModel = getEmptyModel();
+        detailsSubscriberCaptor.getValue().onNext(domainModel);
 
-        verify(movieDetailsView).showMovieDetails(movieDetailsDataMapper.transformDetails(md));
+        verify(movieDetailsView).showMovieDetails(movieDetailsDataMapper.transformDetails(domainModel.getMovieDetails()));
 
         detailsSubscriberCaptor.getValue().onComplete();
         verify(movieDetailsView).hideLoading();
 
-        verify(getMovieTrailers).execute(trailersSubscriberCaptor.capture(), any(Integer.class));
-        List<Trailer> trailers = new ArrayList<>();
-        trailersSubscriberCaptor.getValue().onNext(trailers);
         verifyNoMoreInteractions(movieDetailsView);
     }
 
@@ -144,9 +137,7 @@ public class MovieDetailsPresenterTest {
         verify(movieDetailsView).hideLoading();
         verify(movieDetailsView).showError("TestError");
 
-        verify(getMovieTrailers).execute(trailersSubscriberCaptor.capture(), any(Integer.class));
-        trailersSubscriberCaptor.getValue().onError(new IOException());
-        verify(movieDetailsView, times(2)).showError("TestError");
+        verify(movieDetailsView).showError("TestError");
     }
 
     @Test
@@ -156,17 +147,33 @@ public class MovieDetailsPresenterTest {
         verify(movieDetailsView).startTrailerIntent("url");
     }
 
+    private MovieDetailsDomainModel getDomainModel() {
+        MovieDetailsDomainModel domainModel = new MovieDetailsDomainModel();
+        List<Cast> cast = new ArrayList<>();
+        cast.add(new Cast("char", 1, 1, "name", "path"));
+        domainModel.setCast(cast);
+        List<Trailer> trailers = new ArrayList<>();
+        trailers.add(new Trailer("id", "key", "name", "site"));
+        domainModel.setTrailers(trailers);
+        domainModel.setMovieDetails(new MovieDetails());
+        return domainModel;
+    }
+
+    private MovieDetailsDomainModel getEmptyModel() {
+        MovieDetailsDomainModel domainModel = new MovieDetailsDomainModel();
+        domainModel.setCast(new ArrayList<>());
+        domainModel.setTrailers(new ArrayList<>());
+        domainModel.setMovieDetails(new MovieDetails());
+        return domainModel;
+    }
+
     private MovieModel getMovieModel() {
         return new MovieModel(1, null, "test", "test");
     }
 
-    private MovieDetails getMovieDetails() {
-        return new MovieDetails();
-    }
-
-    private List<Trailer> getTrailerList() {
-        List<Trailer> trailers = new ArrayList<>();
-        trailers.add(new Trailer("id", "key", "name", "site"));
-        return trailers;
+    @After
+    public void tearDown() {
+        RxJavaPlugins.reset();
+        RxAndroidPlugins.reset();
     }
 }

@@ -11,10 +11,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 @PerActivity
-public class TrailerModelDataMapper {
+public class TrailerModelMapper {
 
     @Inject
-    TrailerModelDataMapper() {
+    TrailerModelMapper() {
     }
 
     public TrailerModel transform(Trailer trailer) {

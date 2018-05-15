@@ -6,7 +6,7 @@ import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.domain.entity.Movie;
 import com.esevinale.movieguidetmdb.domain.interactor.DefaultSubscriber;
 import com.esevinale.movieguidetmdb.domain.interactor.UseCase;
-import com.esevinale.movieguidetmdb.presentation.mapper.MovieModelDataMapper;
+import com.esevinale.movieguidetmdb.presentation.mapper.MovieModelMapper;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.presenter.Presenter;
 import com.esevinale.movieguidetmdb.presentation.view.MovieListView;
@@ -18,14 +18,14 @@ public abstract class MovieListPresenter implements Presenter {
 
     private MovieListView mMovieListView;
 
-    private final MovieModelDataMapper mMovieModelDataMapper;
+    private final MovieModelMapper mMovieModelDataMapper;
     private final UseCase mGetMovieList;
 
     private boolean mIsInLoading;
 
     private final static int FIRST_PAGE = 1;
 
-    MovieListPresenter(UseCase getMovieList, MovieModelDataMapper movieModelDataMapper) {
+    MovieListPresenter(UseCase getMovieList, MovieModelMapper movieModelDataMapper) {
         this.mGetMovieList = getMovieList;
         this.mMovieModelDataMapper = movieModelDataMapper;
     }

@@ -21,4 +21,6 @@
     <string name="information">Information</string>
     <string name="na_string">N/A</string>
     <string name="transaction_name">movie_transation</string>
+    <string name="cast_image">Actor Photo</string>
+    <string name="cast">Cast</string>
 </resources>

@@ -6,10 +6,11 @@ import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.domain.entity.Movie;
 import com.esevinale.movieguidetmdb.domain.interactor.DefaultSubscriber;
 import com.esevinale.movieguidetmdb.domain.interactor.GetNowPlayingMovieList;
-import com.esevinale.movieguidetmdb.presentation.mapper.MovieModelDataMapper;
+import com.esevinale.movieguidetmdb.presentation.mapper.MovieModelMapper;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.view.MovieListView;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +23,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
@@ -42,7 +47,7 @@ public class MovieListPresenterTest {
     @Mock
     private MovieListView movieListView;
     @Mock
-    private MovieModelDataMapper movieModelDataMapper;
+    private MovieModelMapper movieModelDataMapper;
     @Mock
     private GetNowPlayingMovieList getMovieList;
     @Captor
@@ -53,6 +58,9 @@ public class MovieListPresenterTest {
         MockitoAnnotations.initMocks(this);
         presenter = new MovieNowPlayingPresenter(getMovieList, movieModelDataMapper);
         presenter.setView(movieListView);
+
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(scheduler -> Schedulers.trampoline());
     }
 
     @Test
@@ -146,5 +154,11 @@ public class MovieListPresenterTest {
     public void onDestroy() {
         presenter.destroy();
         verify(getMovieList).dispose();
+    }
+
+    @After
+    public void tearDown() {
+        RxJavaPlugins.reset();
+        RxAndroidPlugins.reset();
     }
 }

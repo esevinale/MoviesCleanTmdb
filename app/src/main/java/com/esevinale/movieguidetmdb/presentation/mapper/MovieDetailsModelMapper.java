@@ -3,6 +3,7 @@ package com.esevinale.movieguidetmdb.presentation.mapper;
 import com.esevinale.movieguidetmdb.domain.entity.details.Genre;
 import com.esevinale.movieguidetmdb.domain.entity.details.MovieDetails;
 import com.esevinale.movieguidetmdb.domain.entity.details.ProductionCompany;
+import com.esevinale.movieguidetmdb.presentation.internal.di.scopes.PerActivity;
 import com.esevinale.movieguidetmdb.presentation.model.details.GenreModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.MovieDetailsModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.ProductionCompanyModel;
@@ -12,9 +13,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class MovieDetailsDataMapper {
+@PerActivity
+public class MovieDetailsModelMapper {
+
     @Inject
-    MovieDetailsDataMapper() {
+    MovieDetailsModelMapper() {
     }
 
     public GenreModel transformGenre(Genre genre) {

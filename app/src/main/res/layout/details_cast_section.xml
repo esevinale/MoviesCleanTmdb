@@ -1,0 +1,28 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cast_section"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <include layout="@layout/line_decorator" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/bottom_margin"
+        android:layout_marginLeft="@dimen/details_block_margin"
+        android:layout_marginRight="@dimen/details_block_margin"
+        android:layout_marginTop="@dimen/details_block_margin"
+        android:text="@string/cast"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_details_cast"
+        android:layout_margin="@dimen/details_block_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="horizontal">
+
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

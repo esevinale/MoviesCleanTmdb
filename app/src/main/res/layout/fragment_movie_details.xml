@@ -28,6 +28,8 @@
 
             <include layout="@layout/details_information_section" />
 
+            <include layout="@layout/details_cast_section" />
+
         </LinearLayout>
 
 
