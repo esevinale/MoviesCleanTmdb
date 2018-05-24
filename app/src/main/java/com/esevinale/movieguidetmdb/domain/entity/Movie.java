@@ -37,6 +37,9 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
+    public Movie() {
+    }
+
     public Integer getVoteCount() {
         return voteCount;
     }

@@ -19,7 +19,7 @@ public class MovieDetailsDataRepository implements MovieDetailsRepository {
     private final CreditsDataStoreFactory mCreditsStoreFactory;
 
     @Inject
-    public MovieDetailsDataRepository(MovieDetailsDataComposer mMovieDetailsComposer, MovieDetailsDataStoreFactory mDetailsStoreFactory, TrailerDataStoreFactory mTrailerStoreFactory, CreditsDataStoreFactory mCreditsStoreFactory) {
+    MovieDetailsDataRepository(MovieDetailsDataComposer mMovieDetailsComposer, MovieDetailsDataStoreFactory mDetailsStoreFactory, TrailerDataStoreFactory mTrailerStoreFactory, CreditsDataStoreFactory mCreditsStoreFactory) {
         this.mMovieDetailsComposer = mMovieDetailsComposer;
         this.mDetailsStoreFactory = mDetailsStoreFactory;
         this.mTrailerStoreFactory = mTrailerStoreFactory;

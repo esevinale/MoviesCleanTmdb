@@ -45,11 +45,11 @@ import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTest {
+public class MovieListActivityTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule =
-            new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<MovieListActivity> mActivityTestRule =
+            new ActivityTestRule<>(MovieListActivity.class);
 
     @Before
     public void setUp() {

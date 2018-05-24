@@ -21,7 +21,7 @@ public class MovieModelMapper {
         if (movie == null) {
             throw new IllegalArgumentException("Cannot transform a null value");
         }
-        return new MovieModel(movie.getId(), movie.getTitle(), movie.getPosterPath(),movie.getBackdropPath());
+        return new MovieModel(movie.getId(), movie.getTitle(), movie.getPosterPath(), movie.getBackdropPath());
     }
 
     public List<MovieModel> transform(List<Movie> movieCollection) {

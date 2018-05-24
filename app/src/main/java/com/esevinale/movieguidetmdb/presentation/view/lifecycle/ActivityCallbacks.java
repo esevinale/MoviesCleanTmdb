@@ -54,10 +54,6 @@ public class ActivityCallbacks implements Application.ActivityLifecycleCallbacks
         mUnbinders.remove(activity).unbind();
     }
 
-//    private int layoutId(Activity activity) {
-//        return ((ActivityLayout) activity).getLayoutId();
-//    }
-
     private int layoutId(Activity activity) {
         return activity.getClass()
                 .getAnnotation(ActivityLayout.class)

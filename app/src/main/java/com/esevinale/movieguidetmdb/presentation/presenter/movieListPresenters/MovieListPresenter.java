@@ -9,7 +9,7 @@ import com.esevinale.movieguidetmdb.domain.interactor.UseCase;
 import com.esevinale.movieguidetmdb.presentation.mapper.MovieModelMapper;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.presenter.Presenter;
-import com.esevinale.movieguidetmdb.presentation.view.MovieListView;
+import com.esevinale.movieguidetmdb.presentation.view.views.MovieListView;
 import com.esevinale.movieguidetmdb.presentation.view.utils.EspressoIdlingResource;
 
 import java.util.List;
@@ -24,6 +24,8 @@ public abstract class MovieListPresenter implements Presenter {
     private boolean mIsInLoading;
 
     private final static int FIRST_PAGE = 1;
+
+    private List<Movie> savedList;
 
     MovieListPresenter(UseCase getMovieList, MovieModelMapper movieModelDataMapper) {
         this.mGetMovieList = getMovieList;
@@ -147,6 +149,7 @@ public abstract class MovieListPresenter implements Presenter {
 
         @Override
         public void onNext(List<Movie> movies) {
+            savedList = movies;
             if (progressType == ProgressType.Paging)
                 MovieListPresenter.this.addMovieListInView(movies);
             else

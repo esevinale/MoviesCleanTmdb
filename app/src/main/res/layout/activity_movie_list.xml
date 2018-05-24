@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".presentation.view.activity.MainActivity">
+    tools:context=".presentation.view.activity.MovieListActivity">
 
     <include layout="@layout/appbar_layout" />
 
@@ -24,7 +24,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="?android:attr/actionBarSize">
+            android:layout_marginTop="?android:attr/actionBarSize">
 
             <ProgressBar
                 android:id="@+id/progress_bar"

@@ -15,16 +15,18 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import timber.log.Timber;
 
 public class AndroidApp extends Application implements HasActivityInjector {
 
     @Inject
     DispatchingAndroidInjector<Activity> mDispatchingAndroidInjector;
 
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
         super.onCreate();
         this.initializeInjector();
-        this.initializeLeakDetection();
+        this.initializeDebugLibs();
         this.initRealm();
         registerActivityLifecycleCallbacks(new ActivityCallbacks());
     }
@@ -37,9 +39,10 @@ public class AndroidApp extends Application implements HasActivityInjector {
                 .inject(this);
     }
 
-    private void initializeLeakDetection() {
+    private void initializeDebugLibs() {
         if (BuildConfig.DEBUG) {
             LeakCanary.install(this);
+            Timber.plant(new Timber.DebugTree());
         }
     }
 

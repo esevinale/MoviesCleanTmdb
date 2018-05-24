@@ -14,7 +14,7 @@ import com.esevinale.movieguidetmdb.presentation.mapper.CastModelMapper;
 import com.esevinale.movieguidetmdb.presentation.mapper.MovieDetailsModelMapper;
 import com.esevinale.movieguidetmdb.presentation.mapper.TrailerModelMapper;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
-import com.esevinale.movieguidetmdb.presentation.view.MovieDetailsView;
+import com.esevinale.movieguidetmdb.presentation.view.views.MovieDetailsView;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,7 +36,6 @@ import io.reactivex.schedulers.Schedulers;
 import static junit.framework.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;

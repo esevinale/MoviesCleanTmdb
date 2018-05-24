@@ -3,5 +3,5 @@ package com.esevinale.movieguidetmdb.presentation.internal.di.modules.movieListM
 import dagger.Module;
 
 @Module
-public interface PopularModule {
+interface PopularModule {
 }

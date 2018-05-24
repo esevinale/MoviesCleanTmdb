@@ -34,7 +34,7 @@ import com.esevinale.movieguidetmdb.presentation.model.details.GenreModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.MovieDetailsModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.ProductionCompanyModel;
 import com.esevinale.movieguidetmdb.presentation.presenter.MovieDetailsPresenter;
-import com.esevinale.movieguidetmdb.presentation.view.MovieDetailsView;
+import com.esevinale.movieguidetmdb.presentation.view.views.MovieDetailsView;
 import com.esevinale.movieguidetmdb.presentation.view.activity.MovieDetailsActivity;
 import com.esevinale.movieguidetmdb.presentation.view.adapters.CastListAdapter;
 import com.esevinale.movieguidetmdb.presentation.view.utils.Constants;
@@ -94,8 +94,6 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
 
     @Inject
     MovieDetailsPresenter mMovieDetailsPresenter;
-
-    private CastListAdapter mCastListAdapter;
 
 
     public static MovieDetailsFragment getInstance(MovieModel movie) {
@@ -284,7 +282,7 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getDetailsActivity(), LinearLayoutManager.HORIZONTAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mCastListAdapter = new CastListAdapter(this);
+        CastListAdapter mCastListAdapter = new CastListAdapter(this);
         mRecyclerView.setAdapter(mCastListAdapter);
 
         mCastListAdapter.setCast(cast);
@@ -304,16 +302,6 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     @Override
     public void hideLoading() {
         mProgressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showRefreshing() {
-        //not implemented
-    }
-
-    @Override
-    public void hideRefreshing() {
-        //not implemented
     }
 
     @Override

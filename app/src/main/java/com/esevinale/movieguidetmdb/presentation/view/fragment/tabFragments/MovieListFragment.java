@@ -17,9 +17,9 @@ import android.view.ViewGroup;
 import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.presenter.movieListPresenters.MovieListPresenter;
-import com.esevinale.movieguidetmdb.presentation.view.ClicableMovieListView;
-import com.esevinale.movieguidetmdb.presentation.view.activity.MainActivity;
+import com.esevinale.movieguidetmdb.presentation.view.views.ClicableMovieListView;
 import com.esevinale.movieguidetmdb.presentation.view.activity.MovieDetailsActivity;
+import com.esevinale.movieguidetmdb.presentation.view.activity.MovieListActivity;
 import com.esevinale.movieguidetmdb.presentation.view.adapters.MovieListAdapter;
 import com.esevinale.movieguidetmdb.presentation.view.fragment.BaseFragment;
 import com.esevinale.movieguidetmdb.presentation.view.utils.Constants;
@@ -55,8 +55,7 @@ public abstract class MovieListFragment extends BaseFragment implements Clicable
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (savedInstanceState == null)
-            getPresenter().initialize();
+        getPresenter().initialize();
     }
 
     private void setUpAdapter() {
@@ -67,7 +66,7 @@ public abstract class MovieListFragment extends BaseFragment implements Clicable
     private void setUpRecyclerView() {
         MyGridLayoutManager myGridLayoutManager = new MyGridLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(myGridLayoutManager);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (myGridLayoutManager.isOnNextPagePosition())
@@ -108,11 +107,11 @@ public abstract class MovieListFragment extends BaseFragment implements Clicable
         Bundle bundle = null;
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             View v = mSelectedView.findViewById(R.id.movie_poster);
-            v.setTransitionName(getMainActivity().getString(R.string.transaction_name));
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getMainActivity(), v, getMainActivity().getString(R.string.transaction_name));
+            v.setTransitionName(getMovieListActivity().getString(R.string.transaction_name));
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getMovieListActivity(), v, getMovieListActivity().getString(R.string.transaction_name));
             bundle = options.toBundle();
         }
-        Intent intent = new Intent(getMainActivity(), MovieDetailsActivity.class);
+        Intent intent = new Intent(getMovieListActivity(), MovieDetailsActivity.class);
         intent.putExtra(Constants.MOVIE_MODEL, movieModel);
         if (bundle == null)
             startActivity(intent);
@@ -123,7 +122,7 @@ public abstract class MovieListFragment extends BaseFragment implements Clicable
     private void setUpSwipeToRefreshLayout() {
         mSwipe.setOnRefreshListener(this::loadRefresh);
         mSwipe.setColorSchemeResources(R.color.colorAccent);
-        mProgressBar = getMainActivity().getProgressBar();
+        mProgressBar = getMovieListActivity().getProgressBar();
     }
 
     private void loadRefresh() {
@@ -169,7 +168,7 @@ public abstract class MovieListFragment extends BaseFragment implements Clicable
 
     @Override
     public Context context() {
-        return getMainActivity().getApplicationContext();
+        return getMovieListActivity().getApplicationContext();
     }
 
     @Override
@@ -178,7 +177,7 @@ public abstract class MovieListFragment extends BaseFragment implements Clicable
         getPresenter().onMovieClicked(movie);
     }
 
-    private MainActivity getMainActivity() {
-        return (MainActivity) getActivity();
+    private MovieListActivity getMovieListActivity() {
+        return (MovieListActivity) getActivity();
     }
 }

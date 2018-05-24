@@ -8,7 +8,7 @@ import com.esevinale.movieguidetmdb.domain.interactor.DefaultSubscriber;
 import com.esevinale.movieguidetmdb.domain.interactor.GetNowPlayingMovieList;
 import com.esevinale.movieguidetmdb.presentation.mapper.MovieModelMapper;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
-import com.esevinale.movieguidetmdb.presentation.view.MovieListView;
+import com.esevinale.movieguidetmdb.presentation.view.views.MovieListView;
 
 import org.junit.After;
 import org.junit.Before;

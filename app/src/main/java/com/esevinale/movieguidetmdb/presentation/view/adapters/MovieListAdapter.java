@@ -21,7 +21,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.esevinale.movieguidetmdb.R;
 import com.esevinale.movieguidetmdb.data.net.ApiConstants;
 import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
-import com.esevinale.movieguidetmdb.presentation.view.ClicableMovieListView;
+import com.esevinale.movieguidetmdb.presentation.view.views.ClicableMovieListView;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,9 +9,11 @@ import com.esevinale.movieguidetmdb.domain.executor.ThreadExecutor;
 import com.esevinale.movieguidetmdb.domain.repository.MovieRepository;
 import com.esevinale.movieguidetmdb.presentation.UIThread;
 import com.esevinale.movieguidetmdb.presentation.internal.di.modules.movieListModules.MovieListActivityModule;
+import com.esevinale.movieguidetmdb.presentation.internal.di.modules.searchModules.SearchActivityModule;
 import com.esevinale.movieguidetmdb.presentation.internal.di.scopes.PerActivity;
-import com.esevinale.movieguidetmdb.presentation.view.activity.MainActivity;
 import com.esevinale.movieguidetmdb.presentation.view.activity.MovieDetailsActivity;
+import com.esevinale.movieguidetmdb.presentation.view.activity.MovieListActivity;
+import com.esevinale.movieguidetmdb.presentation.view.activity.SearchActivity;
 
 import javax.inject.Singleton;
 
@@ -26,11 +28,15 @@ public interface AppModule {
 
     @PerActivity
     @ContributesAndroidInjector(modules = MovieListActivityModule.class)
-    MainActivity listActivityInjector();
+    MovieListActivity listActivityInjector();
 
     @PerActivity
     @ContributesAndroidInjector(modules = MovieDetailsActivityModule.class)
     MovieDetailsActivity detailsActivityInjector();
+
+    @PerActivity
+    @ContributesAndroidInjector(modules = SearchActivityModule.class)
+    SearchActivity searchActivityInjector();
 
     @Singleton
     @Binds

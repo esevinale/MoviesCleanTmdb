@@ -3,7 +3,7 @@
     android:id="@+id/movie_container_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.view.activity.MainActivity">
+    tools:context=".presentation.view.activity.MovieListActivity">
 
 
     <android.support.v4.widget.SwipeRefreshLayout

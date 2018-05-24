@@ -18,7 +18,7 @@ import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.model.TrailerModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.CastModel;
 import com.esevinale.movieguidetmdb.presentation.model.details.MovieDetailsModel;
-import com.esevinale.movieguidetmdb.presentation.view.MovieDetailsView;
+import com.esevinale.movieguidetmdb.presentation.view.views.MovieDetailsView;
 import com.esevinale.movieguidetmdb.presentation.view.utils.EspressoIdlingResource;
 
 import java.util.List;
