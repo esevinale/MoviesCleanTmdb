@@ -74,6 +74,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     private RequestOptions getGlideOptions() {
         return new RequestOptions()
                 .centerCrop()
+                .placeholder(R.drawable.img_loading)
+                .error(R.drawable.noimagefound)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .priority(Priority.HIGH);
     }

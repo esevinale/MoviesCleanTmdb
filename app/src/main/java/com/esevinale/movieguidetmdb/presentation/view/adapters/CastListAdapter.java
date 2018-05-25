@@ -80,6 +80,8 @@ public class CastListAdapter extends RecyclerView.Adapter<CastListAdapter.ViewHo
     private RequestOptions getGlideOptions() {
         return new RequestOptions()
                 .centerCrop()
+                .placeholder(R.drawable.img_loading)
+                .error(R.drawable.noimagefound)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .priority(Priority.HIGH);
     }

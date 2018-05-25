@@ -1,6 +1,9 @@
 package com.esevinale.movieguidetmdb.presentation.view.fragment;
 
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,9 +26,11 @@ import com.esevinale.movieguidetmdb.presentation.model.MovieModel;
 import com.esevinale.movieguidetmdb.presentation.model.PeopleModel;
 import com.esevinale.movieguidetmdb.presentation.model.TvShowModel;
 import com.esevinale.movieguidetmdb.presentation.presenter.SearchPresenter;
+import com.esevinale.movieguidetmdb.presentation.view.activity.MovieDetailsActivity;
 import com.esevinale.movieguidetmdb.presentation.view.adapters.SearchMovieListAdapter;
 import com.esevinale.movieguidetmdb.presentation.view.adapters.SearchPeopleListAdapter;
 import com.esevinale.movieguidetmdb.presentation.view.adapters.SearchTvShowListAdapter;
+import com.esevinale.movieguidetmdb.presentation.view.utils.Constants;
 import com.esevinale.movieguidetmdb.presentation.view.views.ClickableSearchView;
 import com.esevinale.movieguidetmdb.presentation.view.views.SearchView;
 import com.esevinale.movieguidetmdb.presentation.view.activity.SearchActivity;
@@ -62,9 +67,10 @@ public class SearchFragment extends BaseFragment implements SearchView, Clickabl
     @BindView(R.id.tv_search_notfound)
     TextView mTvSearchNotFound;
 
-
     @Inject
     SearchPresenter mSearchPresenter;
+
+    private View mSelectedView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -213,6 +219,38 @@ public class SearchFragment extends BaseFragment implements SearchView, Clickabl
     }
 
     @Override
+    public void startMovieActivity(MovieModel movieModel) {
+        View imageView = mSelectedView.findViewById(R.id.search_image);
+        String transactionName = getSearchActivity().getString(R.string.transaction_name);
+        Intent intent = new Intent(getSearchActivity(), MovieDetailsActivity.class);
+        intent.putExtra(Constants.MOVIE_MODEL, movieModel);
+        startTransactionActivity(imageView, transactionName, intent);
+    }
+
+    @Override
+    public void startTvActivity(TvShowModel tvShowModel) {
+
+    }
+
+    @Override
+    public void startPersonActivity(PeopleModel peopleModel) {
+
+    }
+
+    private void startTransactionActivity(View posterView, String transactionName, Intent intent) {
+        Bundle bundle = null;
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            posterView.setTransitionName(transactionName);
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getSearchActivity(), posterView, transactionName);
+            bundle = options.toBundle();
+        }
+        if (bundle == null)
+            startActivity(intent);
+        else
+            startActivity(intent, bundle);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         mSearchPresenter.resume();
@@ -232,16 +270,19 @@ public class SearchFragment extends BaseFragment implements SearchView, Clickabl
 
     @Override
     public void onTvClicked(TvShowModel tvShowModel, View view) {
-
+        mSelectedView = view;
+        mSearchPresenter.onTvClicked(tvShowModel);
     }
 
     @Override
     public void onMovieClicked(MovieModel movieModel, View view) {
-
+        mSelectedView = view;
+        mSearchPresenter.onMovieClicked(movieModel);
     }
 
     @Override
     public void onPeopleClicked(PeopleModel peopleModel, View view) {
-
+        mSelectedView = view;
+        mSearchPresenter.onPersonClicked(peopleModel);
     }
 }

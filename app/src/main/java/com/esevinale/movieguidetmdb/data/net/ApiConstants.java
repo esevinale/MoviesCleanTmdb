@@ -8,5 +8,5 @@ public class ApiConstants {
     public static final String POSTER_YOUTUBE_URL = "http://img.youtube.com/vi/%1$s/0.jpg";
     static final String TMDB_KEY = "";
 
-    static final int CONNECT_TIMEOUT = 15000;
+    static final int CONNECT_TIMEOUT = 30000;
 }

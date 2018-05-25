@@ -89,6 +89,8 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     LinearLayout trailersll;
     @BindView(R.id.site_layout)
     LinearLayout siteLayout;
+    @BindView(R.id.companies_container)
+    LinearLayout companiesLayout;
     @BindView(R.id.rv_details_cast)
     RecyclerView mRecyclerView;
 
@@ -163,30 +165,45 @@ public class MovieDetailsFragment extends BaseFragment implements MovieDetailsVi
     public void showMovieDetails(MovieDetailsModel movieModel) {
         collapsingToolbar.setTitle(String.format(getString(R.string.movie_details_toolbar), movieModel.getTitle()));
 
-        if (TextUtils.isEmpty(movieModel.getHomepage()))
-            siteLayout.setVisibility(View.GONE);
-        else {
-            siteLayout.setVisibility(View.VISIBLE);
-            movieSite.setText(movieModel.getHomepage());
-        }
-        movieCompanies.setText(createStringForCompanies(movieModel.getProductionCompanies()));
+        setDetailsHomePage(movieModel.getHomepage());
+        setDetailsCompanies(movieModel.getProductionCompanies());
         movieName.setText(movieModel.getTitle());
 //        movieRate.setText(String.format(getString(R.string.movie_rating), String.valueOf(movieModel.getVoteAverage())));
         if (!TextUtils.isEmpty(movieModel.getReleaseDate()))
             movieYear.setText(movieModel.getReleaseDate().substring(0, 4));
-        if (movieModel.getRuntime() != null) {
-            int hrs = movieModel.getRuntime() / 60;
-            int min = movieModel.getRuntime() - (hrs * 60);
-            movieTime.setText(String.format(getString(R.string.movie_duration), String.valueOf(hrs), String.valueOf(min)));
-        } else {
-            movieTime.setText(String.format(getString(R.string.movie_duration), getString(R.string.na_string), getString(R.string.na_string)));
-        }
+        setDetailsRunTime(movieModel.getRuntime());
         movieOverview.setText(movieModel.getOverview());
         movieGenres.setText(createStringForGenres(movieModel.getGenres()));
         if (movieModel.getBudget() != null)
             movieBudget.setText(formatStringToDollars(movieModel.getBudget()));
         if (movieModel.getRevenue() != null)
             movieRevenue.setText(formatStringToDollars(movieModel.getRevenue()));
+    }
+
+    private void setDetailsHomePage(String homePage) {
+        if (TextUtils.isEmpty(homePage))
+            siteLayout.setVisibility(View.GONE);
+        else {
+            movieSite.setText(homePage);
+        }
+    }
+
+    private void setDetailsCompanies(List<ProductionCompanyModel> productionCompanies) {
+        if (productionCompanies.isEmpty()) {
+            companiesLayout.setVisibility(View.GONE);
+        } else {
+            movieCompanies.setText(createStringForCompanies(productionCompanies));
+        }
+    }
+
+    private void setDetailsRunTime(Integer runTime) {
+        if (runTime != null) {
+            int hrs = runTime / 60;
+            int min = runTime - (hrs * 60);
+            movieTime.setText(String.format(getString(R.string.movie_duration), String.valueOf(hrs), String.valueOf(min)));
+        } else {
+            movieTime.setText(String.format(getString(R.string.movie_duration), getString(R.string.na_string), getString(R.string.na_string)));
+        }
     }
 
     private String formatStringToDollars(int sum) {
